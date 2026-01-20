@@ -6,9 +6,39 @@ This module covers micro-electro-mechanical systems and sensor design, including
 
 ---
 
+## Industry-Standard Export Formats
+
+| Format | Description | Use Case |
+|--------|-------------|----------|
+| **GDSII** | Graphic Database System II | Primary mask format for MEMS foundries |
+| **CIF** | Caltech Intermediate Form | Alternative mask format, MNX compatible |
+| **DXF** | Drawing Exchange Format | CAD interchange, laser machining |
+| **STEP** | Standard for Exchange of Product Data | 3D mechanical models, packaging |
+| **STL** | Stereolithography format | 3D printing prototypes |
+| **GDS JSON** | Hardware Tool intermediate | Internal representation |
+
+---
+
+## What You Get from the Unified Platform
+
+These capabilities are **inherited from the shared Hardware Tool platform** and work identically across all hardware domains:
+
+| Shared Capability | MEMS-Specific Application |
+|-------------------|---------------------------|
+| Project Management | MEMS projects with process files |
+| Hierarchical Design | Device assemblies, arrays |
+| Design Rule Check | Process-specific MEMS DRC |
+| 3D Visualization | Cross-section, deformation animation |
+| FEA Simulation | Modal, stress, electrostatic |
+| Version Control | Git-friendly formats |
+| CLI Automation | Batch mask generation |
+| AI Assistant | Structure optimization, sensitivity tuning |
+
+---
+
 ## Documentation Index
 
-### Core Architecture & Fundamentals
+### Core Architecture (MEMS-Specific Extensions)
 
 - [MEMS Project Structure & Management](./core-architecture/mems-project-structure-and-management.md) - Unified MEMS project format
 - [Unified MEMS Design File Format](./core-architecture/unified-mems-design-file-format.md) - .hwt_mems format specification

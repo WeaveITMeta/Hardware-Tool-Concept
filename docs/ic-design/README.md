@@ -2,13 +2,44 @@
 
 **Integrated Circuit Design for Digital ASIC, Analog, and Mixed-Signal**
 
-This module extends Hardware Tool for integrated circuit design, supporting digital ASIC flows, analog circuits, and mixed-signal integration. Documentation mirrors the core EDA structure for consistency.
+This module extends Hardware Tool for integrated circuit design, supporting digital ASIC flows, analog circuits, and mixed-signal integration.
+
+---
+
+## Industry-Standard Export Formats
+
+| Format | Description | Use Case |
+|--------|-------------|----------|
+| **GDSII** | Graphic Database System II | Primary tape-out format for foundries |
+| **OASIS** | Open Artwork System Interchange Standard | Compressed alternative to GDSII (10-50x smaller) |
+| **LEF/DEF** | Library/Design Exchange Format | Standard cell libraries and placed/routed designs |
+| **Liberty (.lib)** | Timing/power library format | Static timing analysis, power estimation |
+| **Verilog/VHDL** | Hardware description languages | RTL design, gate-level netlists |
+| **SPEF** | Standard Parasitic Exchange Format | Parasitic data for timing analysis |
+| **SDF** | Standard Delay Format | Timing annotation for simulation |
+
+---
+
+## What You Get from the Unified Platform
+
+These capabilities are **inherited from the shared Hardware Tool platform** and work identically across all hardware domains:
+
+| Shared Capability | IC-Specific Application |
+|-------------------|------------------------|
+| Project Management | IC project with PDK references |
+| Hierarchical Design | Module/cell hierarchy |
+| Design Rule Check | Extensible for foundry DRC decks |
+| 3D Visualization | Layer-by-layer IC view |
+| Thermal Simulation | Junction temperature analysis |
+| Version Control | Git-friendly text formats |
+| CLI Automation | Batch synthesis, P&R, verification |
+| AI Assistant | Layout optimization, timing closure |
 
 ---
 
 ## Documentation Index
 
-### Core Architecture & Fundamentals
+### Core Architecture (IC-Specific Extensions)
 
 - [IC Project Structure & Management](./core-architecture/ic-project-structure-and-management.md) - Unified IC project format, PDK integration
 - [Unified IC Design File Format](./core-architecture/unified-ic-design-file-format.md) - .hwt_ic format specification

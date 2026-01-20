@@ -19,14 +19,14 @@ Hardware Tool is a revolutionary, pure-Rust EDA suite that transcends traditiona
 
 Hardware Tool treats all hardware types as first-class citizens. Each domain shares the same core architecture while providing specialized tools for domain-specific needs.
 
-| Domain | Description | Key Outputs |
-|--------|-------------|-------------|
-| **PCB** | Printed circuit boards, from simple to HDI | Gerber, IPC-2581, ODB++ |
-| **IC** | Digital ASIC, analog, mixed-signal ICs | GDSII, OASIS, LEF/DEF |
-| **Quantum** | Superconducting, photonic, trapped ion qubits | GDSII, Qiskit Pulse |
-| **MEMS** | Accelerometers, gyroscopes, pressure sensors | GDSII, DXF |
-| **RF/Photonics** | LNAs, filters, antennas, waveguides | Gerber, GDSII, Touchstone |
-| **Packaging** | Chiplets, 2.5D/3D, interposers, TSV | ODB++, GDSII |
+| Domain | Description | Industry-Standard Outputs |
+|--------|-------------|---------------------------|
+| **PCB** | Printed circuit boards, from simple to HDI | Gerber RS-274X, Excellon, IPC-2581, ODB++ |
+| **IC** | Digital ASIC, analog, mixed-signal ICs | GDSII, OASIS, LEF/DEF, Liberty (.lib) |
+| **Quantum** | Superconducting, photonic, trapped ion qubits | GDSII, CIF, Qiskit Pulse, OpenQASM |
+| **MEMS** | Accelerometers, gyroscopes, pressure sensors | GDSII, CIF, DXF, STEP |
+| **RF/Photonics** | LNAs, filters, antennas, waveguides | Gerber, GDSII, Touchstone (SnP) |
+| **Packaging** | Chiplets, 2.5D/3D, interposers, TSV | GDSII, ODB++, IPC-2581, APD |
 
 ---
 

@@ -6,9 +6,40 @@ This module handles radio frequency, microwave, and photonic designs, focusing o
 
 ---
 
+## Industry-Standard Export Formats
+
+| Format | Description | Use Case |
+|--------|-------------|----------|
+| **Gerber RS-274X** | PCB manufacturing format | RF PCB fabrication |
+| **GDSII** | Mask format | MMIC, photonic IC fabrication |
+| **Touchstone (SnP)** | S-parameter data format | Network analyzer data, simulation models |
+| **MDIF** | Measured Data Interchange Format | Multi-dimensional device data |
+| **ADS/AWR** | Vendor simulation formats | Import/export with commercial tools |
+| **HFSS** | Ansys EM format | 3D EM simulation interchange |
+| **CST** | Dassault EM format | 3D EM simulation interchange |
+
+---
+
+## What You Get from the Unified Platform
+
+These capabilities are **inherited from the shared Hardware Tool platform** and work identically across all hardware domains:
+
+| Shared Capability | RF/Photonics-Specific Application |
+|-------------------|-----------------------------------|
+| Project Management | RF projects with substrate definitions |
+| Hierarchical Design | Amplifier stages, filter sections |
+| Design Rule Check | High-frequency DRC, impedance validation |
+| 3D Visualization | EM field distribution, radiation patterns |
+| EM Simulation | FDTD, MoM, FEM solvers |
+| Version Control | Git-friendly formats |
+| CLI Automation | Batch EM simulation, optimization |
+| AI Assistant | Matching network synthesis, layout optimization |
+
+---
+
 ## Documentation Index
 
-### Core Architecture & Fundamentals
+### Core Architecture (RF-Specific Extensions)
 
 - [RF Project Structure & Management](./core-architecture/rf-project-structure-and-management.md) - Unified RF project format
 - [Unified RF Design File Format](./core-architecture/unified-rf-design-file-format.md) - .hwt_rf format specification

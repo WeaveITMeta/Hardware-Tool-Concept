@@ -2,13 +2,43 @@
 
 **Quantum Circuit and Hardware Design for Superconducting, Photonic, and Trapped Ion Systems**
 
-This module supports quantum circuit and hardware design, including qubits, gates, and cryogenic integration. It aligns with emerging quantum EDA standards.
+This module supports quantum circuit and hardware design, including qubits, gates, and cryogenic integration.
+
+---
+
+## Industry-Standard Export Formats
+
+| Format | Description | Use Case |
+|--------|-------------|----------|
+| **GDSII** | Graphic Database System II | Superconducting circuit fabrication masks |
+| **CIF** | Caltech Intermediate Form | Legacy mask format, some foundries |
+| **Qiskit Pulse** | IBM pulse-level control | Gate calibration, control sequences |
+| **OpenQASM 3.0** | Open Quantum Assembly Language | Circuit description, transpilation |
+| **JSON** | Calibration data format | Qubit frequencies, coupling strengths |
+| **Touchstone** | S-parameter data | Control line characterization |
+
+---
+
+## What You Get from the Unified Platform
+
+These capabilities are **inherited from the shared Hardware Tool platform** and work identically across all hardware domains:
+
+| Shared Capability | Quantum-Specific Application |
+|-------------------|------------------------------|
+| Project Management | Quantum processor projects |
+| Hierarchical Design | Qubit arrays, control blocks |
+| Design Rule Check | Crosstalk, isolation rules |
+| 3D Visualization | Layer stack, EM field overlay |
+| EM Simulation | CPW resonator, coupler analysis |
+| Version Control | Git-friendly formats |
+| CLI Automation | Batch transpilation, export |
+| AI Assistant | Topology optimization, frequency assignment |
 
 ---
 
 ## Documentation Index
 
-### Core Architecture & Fundamentals
+### Core Architecture (Quantum-Specific Extensions)
 
 - [Quantum Project Structure & Management](./core-architecture/quantum-project-structure-and-management.md) - Unified quantum project format
 - [Unified Quantum Design File Format](./core-architecture/unified-quantum-design-file-format.md) - .hwt_quantum format specification

@@ -6,9 +6,40 @@ This module supports multi-die integration, 2.5D/3D packaging, and heterogeneous
 
 ---
 
+## Industry-Standard Export Formats
+
+| Format | Description | Use Case |
+|--------|-------------|----------|
+| **GDSII** | Graphic Database System II | Interposer, RDL mask fabrication |
+| **ODB++** | Open Database format | Substrate manufacturing (OSAT) |
+| **IPC-2581** | Intelligent PCB format | Single-file substrate data |
+| **APD** | Advanced Package Description | Package assembly specification |
+| **STEP** | 3D mechanical format | Thermal/mechanical simulation |
+| **Gerber** | PCB format | Organic substrate layers |
+| **CSV** | Assembly data | Die placement, bump maps |
+
+---
+
+## What You Get from the Unified Platform
+
+These capabilities are **inherited from the shared Hardware Tool platform** and work identically across all hardware domains:
+
+| Shared Capability | Packaging-Specific Application |
+|-------------------|--------------------------------|
+| Project Management | Multi-die system projects |
+| Hierarchical Design | Die stacks, interposer hierarchy |
+| Design Rule Check | Assembly DRC, bump pitch rules |
+| 3D Visualization | Exploded view, cross-section, thermal overlay |
+| Thermal Simulation | Junction temperature, warpage prediction |
+| Version Control | Git-friendly formats |
+| CLI Automation | Batch assembly data generation |
+| AI Assistant | Die placement optimization, routing |
+
+---
+
 ## Documentation Index
 
-### Core Architecture & Fundamentals
+### Core Architecture (Packaging-Specific Extensions)
 
 - [Chiplet Project Structure & Management](./core-architecture/chiplet-project-structure-and-management.md) - Unified packaging project format
 - [Unified Packaging File Format](./core-architecture/unified-packaging-file-format.md) - .hwt_pkg format specification
