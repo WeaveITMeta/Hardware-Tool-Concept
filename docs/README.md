@@ -29,7 +29,7 @@ Hardware Tool treats all hardware types as first-class citizens. Each domain sha
 |--------|-------------|---------------------------|
 | **PCB** | Printed circuit boards, from simple to HDI | Gerber RS-274X, Excellon, IPC-2581, ODB++ |
 | **IC** | Digital ASIC, analog, mixed-signal ICs | GDSII, OASIS, LEF/DEF, Liberty (.lib) |
-| **Quantum** | Superconducting, photonic, trapped ion qubits | GDSII, CIF, Qiskit Pulse, OpenQASM |
+| **Quantum** | Superconducting, photonic, trapped ion qubits | GDSII, CIF, Qiskit Pulse, OpenQASM, LogosQ |
 | **MEMS** | Accelerometers, gyroscopes, pressure sensors | GDSII, CIF, DXF, STEP |
 | **RF/Photonics** | LNAs, filters, antennas, waveguides | Gerber, GDSII, Touchstone (SnP) |
 | **Packaging** | Chiplets, 2.5D/3D, interposers, TSV | GDSII, ODB++, IPC-2581, APD |
