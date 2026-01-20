@@ -1544,6 +1544,505 @@ ScientificAccuracyConfig {
 | **Cost-sensitive projects** | Hardware Tool |
 | **Space/vacuum thermal** | Hardware Tool (radiation-dominant) |
 
+## Thermal Failure Prediction (Heat Break Points)
+
+Predict time-to-failure by simulating thermal degradation, melting, and deformation thresholds.
+
+### Material Thermal Limits
+
+| Material | T_g (°C) | T_melt (°C) | T_degrade (°C) | Max Continuous (°C) |
+|----------|----------|-------------|----------------|---------------------|
+| **FR4** | 130-140 | N/A (chars) | 300 | 130 |
+| **High-Tg FR4** | 170-180 | N/A | 300 | 170 |
+| **Polyimide** | 250+ | N/A | 400 | 250 |
+| **Solder (Sn63/Pb37)** | N/A | 183 | N/A | 150 |
+| **Solder (SAC305)** | N/A | 217-220 | N/A | 180 |
+| **Copper** | N/A | 1085 | N/A | 200 (oxidation) |
+| **Aluminum** | N/A | 660 | N/A | 150 (creep) |
+| **Plastic IC package** | 150-175 | 250+ | 200 | 125-150 |
+| **Ceramic IC package** | N/A | 1500+ | N/A | 200 |
+| **Epoxy adhesive** | 80-120 | N/A | 150 | 85 |
+| **Thermal paste** | N/A | N/A | 200 | 150 |
+
+**Key temperatures:**
+- **T_g** = Glass transition (polymer softening, dimensional instability)
+- **T_melt** = Melting point (complete structural failure)
+- **T_degrade** = Thermal decomposition (material breakdown)
+
+### Failure Mode Configuration
+
+```rust
+ThermalFailureLimits {
+    // PCB substrate
+    substrate: SubstrateLimits {
+        material: SubstrateMaterial::FR4,
+        glass_transition: 140.0,      // °C - warping begins
+        decomposition: 300.0,         // °C - charring
+        max_continuous: 130.0,        // °C - safe long-term
+        delamination_threshold: 260.0, // °C - layer separation
+    },
+    
+    // Solder joints
+    solder: SolderLimits {
+        alloy: SolderAlloy::SAC305,
+        solidus: 217.0,               // °C - begins melting
+        liquidus: 220.0,              // °C - fully liquid
+        reflow_max: 250.0,            // °C - max reflow temp
+        creep_threshold: 0.8,         // Fraction of T_melt (K)
+        fatigue_cycles: true,         // Track thermal cycling
+    },
+    
+    // Components (per-component overrides)
+    components: vec![
+        ComponentLimit {
+            ref_des: "U1",
+            description: "MCU",
+            max_junction: 125.0,      // °C - datasheet max
+            max_case: 105.0,          // °C
+            thermal_shutdown: Some(150.0),
+        },
+        ComponentLimit {
+            ref_des: "Q1",
+            description: "Power MOSFET",
+            max_junction: 175.0,
+            max_case: 150.0,
+            thermal_shutdown: None,
+        },
+        ComponentLimit {
+            ref_des: "C*",
+            description: "Capacitors",
+            max_junction: 105.0,      // Electrolytic
+            max_case: 105.0,
+            thermal_shutdown: None,
+        },
+    ],
+    
+    // Copper traces
+    copper: CopperLimits {
+        max_temp: 200.0,              // °C - oxidation concern
+        annealing_threshold: 150.0,   // °C - softening
+        fusing_current: true,         // Calculate I²t limits
+    },
+}
+```
+
+### Time-to-Failure Analysis
+
+Calculate how long the board can operate before reaching critical temperatures:
+
+```rust
+TimeToFailureAnalysis {
+    // Simulation parameters
+    simulation: TransientConfig {
+        initial_temp: 25.0,           // °C ambient
+        power_profile: PowerProfile::Constant,  // or Pulsed, Cyclic
+        max_simulation_time: 86400.0, // seconds (24 hours)
+        time_step: 0.1,               // seconds
+    },
+    
+    // Failure criteria
+    criteria: FailureCriteria {
+        // Any of these triggers failure
+        substrate_tg: true,           // T > T_g
+        solder_reflow: true,          // T > solidus
+        component_max: true,          // T > component limit
+        copper_fusing: true,          // I²t exceeded
+        
+        // Margin for safety
+        safety_margin: 0.9,           // Trigger at 90% of limit
+    },
+    
+    // Output
+    output: AnalysisOutput {
+        time_to_failure: true,
+        failure_location: true,
+        failure_mode: true,
+        temperature_history: true,
+        margin_timeline: true,
+    },
+}
+```
+
+### Time-to-Failure Solver
+
+```rust
+fn calculate_time_to_failure(
+    pcb: &PcbThermalModel,
+    limits: &ThermalFailureLimits,
+    config: &TimeToFailureConfig,
+) -> TimeToFailureResult {
+    let mut time = 0.0;
+    let mut temperatures = vec![config.initial_temp; pcb.mesh.num_nodes()];
+    let mut history = Vec::new();
+    
+    loop {
+        // Advance thermal simulation one step
+        temperatures = advance_thermal_step(
+            &pcb,
+            &temperatures,
+            config.time_step,
+        );
+        time += config.time_step;
+        
+        // Check all failure criteria
+        let failure = check_failure_criteria(&temperatures, &pcb, limits);
+        
+        if let Some(failure_info) = failure {
+            return TimeToFailureResult {
+                time_to_failure: time,
+                failure_mode: failure_info.mode,
+                failure_location: failure_info.location,
+                failure_temperature: failure_info.temperature,
+                limit_exceeded: failure_info.limit,
+                temperature_history: history,
+                status: FailureStatus::Failed,
+            };
+        }
+        
+        // Record history at intervals
+        if (time % config.history_interval).abs() < config.time_step {
+            history.push(TemperatureSnapshot {
+                time,
+                max_temp: temperatures.iter().cloned().fold(f64::MIN, f64::max),
+                hotspot_location: find_hotspot(&temperatures, &pcb.mesh),
+                margins: calculate_margins(&temperatures, &pcb, limits),
+            });
+        }
+        
+        // Check if simulation time exceeded (no failure)
+        if time >= config.max_simulation_time {
+            return TimeToFailureResult {
+                time_to_failure: f64::INFINITY,
+                failure_mode: FailureMode::None,
+                failure_location: None,
+                failure_temperature: temperatures.iter().cloned().fold(f64::MIN, f64::max),
+                limit_exceeded: None,
+                temperature_history: history,
+                status: FailureStatus::Safe,
+            };
+        }
+    }
+}
+
+fn check_failure_criteria(
+    temperatures: &[f64],
+    pcb: &PcbThermalModel,
+    limits: &ThermalFailureLimits,
+) -> Option<FailureInfo> {
+    // Check substrate glass transition
+    for (idx, &temp) in temperatures.iter().enumerate() {
+        let node = &pcb.mesh.nodes[idx];
+        
+        // Substrate check
+        if node.material == Material::FR4 {
+            if temp >= limits.substrate.glass_transition * limits.safety_margin {
+                return Some(FailureInfo {
+                    mode: FailureMode::SubstrateGlassTransition,
+                    location: node.position,
+                    temperature: temp,
+                    limit: limits.substrate.glass_transition,
+                });
+            }
+        }
+        
+        // Solder joint check
+        if node.is_solder_joint {
+            if temp >= limits.solder.solidus * limits.safety_margin {
+                return Some(FailureInfo {
+                    mode: FailureMode::SolderMelting,
+                    location: node.position,
+                    temperature: temp,
+                    limit: limits.solder.solidus,
+                });
+            }
+        }
+        
+        // Component check
+        if let Some(component) = node.component {
+            if let Some(comp_limit) = limits.components.iter()
+                .find(|c| c.ref_des == component.ref_des) 
+            {
+                if temp >= comp_limit.max_junction * limits.safety_margin {
+                    return Some(FailureInfo {
+                        mode: FailureMode::ComponentOvertemp,
+                        location: node.position,
+                        temperature: temp,
+                        limit: comp_limit.max_junction,
+                    });
+                }
+            }
+        }
+    }
+    
+    None
+}
+```
+
+### Failure Modes
+
+| Mode | Description | Consequence | Reversible? |
+|------|-------------|-------------|-------------|
+| **Glass Transition** | Substrate softens above T_g | Warping, dimensional change | Partially |
+| **Delamination** | Layer separation | Open circuits, moisture ingress | No |
+| **Solder Reflow** | Joints melt | Component detachment, shorts | No |
+| **Solder Creep** | Slow deformation under stress | Joint fatigue, intermittent | No |
+| **Component Overtemp** | IC exceeds T_j max | Degradation, latch-up, failure | Maybe |
+| **Thermal Shutdown** | IC self-protection | Temporary loss of function | Yes |
+| **Copper Annealing** | Trace softening | Increased resistance | No |
+| **Copper Fusing** | Trace melts (I²t) | Open circuit | No |
+| **Decomposition** | Material breakdown | Fire hazard, toxic fumes | No |
+
+### Time-to-Failure UI
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ Time-to-Failure Analysis                                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ Power Profile: [● Constant] [○ Pulsed] [○ Cyclic] [○ Custom]   │
+│                                                                 │
+│ Operating Conditions:                                           │
+│   Ambient: [25.0  ] °C    Power: [100%   ] of nominal          │
+│   Airflow: [Natural ▼]    Enclosure: [Open   ▼]                │
+│                                                                 │
+│ ═══════════════════════════════════════════════════════════════ │
+│ RESULTS                                                         │
+│ ═══════════════════════════════════════════════════════════════ │
+│                                                                 │
+│ ⚠ FAILURE PREDICTED                                            │
+│                                                                 │
+│ Time to failure: 4 hours 23 minutes (15,780 seconds)           │
+│                                                                 │
+│ First failure:                                                  │
+│   Mode: Solder joint melting                                    │
+│   Location: U1 pin 45 (BGA ball)                               │
+│   Temperature at failure: 217°C (limit: 217°C)                 │
+│   Component: U1 (MCU)                                          │
+│                                                                 │
+│ Temperature Timeline:                                           │
+│   ┌────────────────────────────────────────────────────────┐   │
+│   │ °C                                                      │   │
+│   │ 220├─────────────────────────────────────────────╱──── │   │
+│   │ 180├───────────────────────────────────────╱───────── │   │
+│   │ 140├─────────────────────────────────╱─────────────── │   │
+│   │ 100├───────────────────────────╱───────────────────── │   │
+│   │  60├─────────────────────╱─────────────────────────── │   │
+│   │  25├────────────╱──────────────────────────────────── │   │
+│   │    └────┬────┬────┬────┬────┬────┬────┬────┬────┬──── │   │
+│   │         1h   2h   3h   4h   5h                         │   │
+│   └────────────────────────────────────────────────────────┘   │
+│                                                                 │
+│ Margin Analysis:                                                │
+│   Substrate (T_g):     68% margin remaining at failure         │
+│   Solder (solidus):    0% margin (FAILED)                      │
+│   U1 (T_j max):        27% margin remaining                    │
+│   Q1 (T_j max):        45% margin remaining                    │
+│                                                                 │
+│ Recommendations:                                                │
+│   1. Add thermal vias under U1 (est. +2.5 hours)               │
+│   2. Increase copper pour around U1 (est. +1 hour)             │
+│   3. Add heatsink to U1 (est. +8 hours)                        │
+│   4. Reduce power dissipation by 20% (est. infinite runtime)   │
+│                                                                 │
+│ [Run Extended] [Export Report] [Show on PCB] [Close]            │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Accelerated Life Testing Simulation
+
+Simulate accelerated aging to predict long-term reliability:
+
+```rust
+AcceleratedLifeTest {
+    // Arrhenius model for temperature acceleration
+    arrhenius: ArrheniusModel {
+        activation_energy: 0.7,       // eV (typical for electronics)
+        reference_temp: 298.15,       // K (25°C)
+        boltzmann: 8.617e-5,          // eV/K
+    },
+    
+    // Test conditions
+    test_conditions: vec![
+        TestCondition { temp: 85.0, duration_hours: 1000 },   // Standard
+        TestCondition { temp: 105.0, duration_hours: 500 },   // Accelerated
+        TestCondition { temp: 125.0, duration_hours: 168 },   // Highly accelerated
+    ],
+    
+    // Acceleration factor calculation
+    // AF = exp[(Ea/k) × (1/T_use - 1/T_test)]
+}
+
+fn calculate_acceleration_factor(
+    test_temp_k: f64,
+    use_temp_k: f64,
+    activation_energy_ev: f64,
+) -> f64 {
+    let k = 8.617e-5;  // Boltzmann constant (eV/K)
+    let exponent = (activation_energy_ev / k) * (1.0 / use_temp_k - 1.0 / test_temp_k);
+    exponent.exp()
+}
+
+// Example: 125°C test vs 55°C use, Ea = 0.7 eV
+// AF = exp[(0.7 / 8.617e-5) × (1/328 - 1/398)] = 32.4×
+// 168 hours at 125°C ≈ 5,443 hours at 55°C (227 days)
+```
+
+### Thermal Cycling Fatigue
+
+Predict solder joint fatigue from thermal cycling:
+
+```rust
+ThermalCyclingFatigue {
+    // Coffin-Manson model
+    coffin_manson: CoffinMansonModel {
+        // N_f = C × (ΔT)^(-n)
+        coefficient_c: 1e4,           // Material constant
+        exponent_n: 2.0,              // Typically 1.9-2.5
+    },
+    
+    // Cycle definition
+    cycle: ThermalCycle {
+        t_min: -40.0,                 // °C (cold extreme)
+        t_max: 85.0,                  // °C (hot extreme)
+        dwell_time_min: 15.0,         // minutes at each extreme
+        ramp_rate: 10.0,              // °C/minute
+    },
+    
+    // Calculate cycles to failure
+    // ΔT = 125°C → N_f ≈ 640 cycles
+}
+
+fn cycles_to_failure(delta_t: f64, c: f64, n: f64) -> f64 {
+    c * delta_t.powf(-n)
+}
+```
+
+### Derating Analysis
+
+Apply temperature derating to component ratings:
+
+```rust
+DeratingAnalysis {
+    // Component derating curves
+    components: vec![
+        DeratingCurve {
+            ref_des: "C1",
+            component_type: ComponentType::Capacitor,
+            // Voltage derating with temperature
+            derating: vec![
+                DeratingPoint { temp: 25.0, factor: 1.0 },
+                DeratingPoint { temp: 85.0, factor: 0.8 },
+                DeratingPoint { temp: 105.0, factor: 0.5 },
+                DeratingPoint { temp: 125.0, factor: 0.0 },  // Unusable
+            ],
+        },
+        DeratingCurve {
+            ref_des: "Q1",
+            component_type: ComponentType::Mosfet,
+            // Power derating with temperature
+            derating: vec![
+                DeratingPoint { temp: 25.0, factor: 1.0 },
+                DeratingPoint { temp: 100.0, factor: 0.8 },
+                DeratingPoint { temp: 150.0, factor: 0.4 },
+                DeratingPoint { temp: 175.0, factor: 0.0 },
+            ],
+        },
+    ],
+}
+```
+
+### Failure Prediction Report
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ Thermal Failure Prediction Report                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ Board: my_board.hwt_pcb                                         │
+│ Analysis Date: 2026-01-19                                       │
+│                                                                 │
+│ ═══════════════════════════════════════════════════════════════ │
+│ CONTINUOUS OPERATION LIMITS                                     │
+│ ═══════════════════════════════════════════════════════════════ │
+│                                                                 │
+│ At 25°C ambient, natural convection:                           │
+│                                                                 │
+│ Component    │ T_max  │ T_sim  │ Margin │ Time to Fail         │
+│ ─────────────┼────────┼────────┼────────┼──────────────────     │
+│ U1 (MCU)     │ 125°C  │ 89°C   │ 29%    │ >10,000 hours        │
+│ Q1 (MOSFET)  │ 175°C  │ 112°C  │ 36%    │ >10,000 hours        │
+│ Solder (U1)  │ 217°C  │ 89°C   │ 59%    │ >10,000 hours        │
+│ Substrate    │ 140°C  │ 78°C   │ 44%    │ >10,000 hours        │
+│                                                                 │
+│ ✓ SAFE for continuous operation at rated power                 │
+│                                                                 │
+│ ═══════════════════════════════════════════════════════════════ │
+│ OVERLOAD ANALYSIS (150% power)                                  │
+│ ═══════════════════════════════════════════════════════════════ │
+│                                                                 │
+│ Component    │ T_max  │ T_sim  │ Margin │ Time to Fail         │
+│ ─────────────┼────────┼────────┼────────┼──────────────────     │
+│ U1 (MCU)     │ 125°C  │ 134°C  │ -7%    │ 2.3 hours ⚠         │
+│ Q1 (MOSFET)  │ 175°C  │ 156°C  │ 11%    │ 8.1 hours            │
+│ Solder (U1)  │ 217°C  │ 134°C  │ 38%    │ >24 hours            │
+│ Substrate    │ 140°C  │ 118°C  │ 16%    │ >24 hours            │
+│                                                                 │
+│ ⚠ FAILURE at 150% power: U1 exceeds T_j in 2.3 hours          │
+│                                                                 │
+│ ═══════════════════════════════════════════════════════════════ │
+│ THERMAL CYCLING FATIGUE                                         │
+│ ═══════════════════════════════════════════════════════════════ │
+│                                                                 │
+│ Cycle: -40°C to +85°C (automotive)                             │
+│ Predicted cycles to failure: 640 cycles                         │
+│ At 1 cycle/day: ~1.75 years                                    │
+│                                                                 │
+│ ═══════════════════════════════════════════════════════════════ │
+│ RECOMMENDATIONS                                                 │
+│ ═══════════════════════════════════════════════════════════════ │
+│                                                                 │
+│ 1. Add thermal vias under U1 (16 vias, 0.3mm)                  │
+│    → Reduces U1 temp by 15°C, extends overload time to 8+ hrs  │
+│                                                                 │
+│ 2. Increase copper pour on inner layers                        │
+│    → Reduces overall temps by 5-8°C                            │
+│                                                                 │
+│ 3. Consider heatsink for Q1 if >125% sustained load expected   │
+│                                                                 │
+│ [Export PDF] [Apply Recommendations] [Re-simulate] [Close]      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### API Usage
+
+```rust
+// Quick time-to-failure check
+let ttf = pcb.time_to_failure(TimeToFailureConfig::default())?;
+println!("Time to failure: {:?}", ttf.time_to_failure);
+println!("First failure: {} at {:?}", ttf.failure_mode, ttf.failure_location);
+
+// Detailed analysis with custom limits
+let limits = ThermalFailureLimits::automotive();  // -40°C to +125°C
+let result = pcb.analyze_thermal_failure(limits, AnalysisConfig {
+    power_levels: vec![1.0, 1.25, 1.5, 2.0],  // 100%, 125%, 150%, 200%
+    ambient_temps: vec![25.0, 55.0, 85.0],
+    include_cycling: true,
+    include_derating: true,
+})?;
+
+// Check specific scenario
+let scenario = pcb.simulate_scenario(Scenario {
+    ambient: 55.0,
+    power_factor: 1.2,
+    duration: Duration::hours(8),
+    cooling: Cooling::ForcedAir { velocity: 2.0 },
+})?;
+
+if scenario.any_failure() {
+    println!("Failures: {:?}", scenario.failures);
+}
+```
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
@@ -1552,6 +2051,7 @@ ScientificAccuracyConfig {
 | `Shift+T` | Run thermal simulation |
 | `Ctrl+T` | Open thermal settings |
 | `Alt+T` | Show thermal report |
+| `Ctrl+Shift+T` | Time-to-failure analysis |
 
 ## Related Topics
 
