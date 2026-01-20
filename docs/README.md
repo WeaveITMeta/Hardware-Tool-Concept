@@ -42,6 +42,7 @@ These modules are shared across ALL hardware domains, providing consistent proje
 - [Unified Project File Format](./core-architecture/unified-project-file-format.md) - .hwt format specification
 - [Circuit JSON as Intermediate Representation](./core-architecture/circuit-json-ir.md) - Universal data model
 - [Programmatic / Code-First Design](./core-architecture/programmatic-design.md) - Rust-native hardware description
+- [Shared Module Consolidation](./core-architecture/shared-module-consolidation.md) - Architecture inheritance patterns
 
 #### 1.2 Shared Design Capture
 
@@ -59,7 +60,8 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 #### 1.4 Shared 3D Visualization
 
-- [3D Viewer](./3d-visualization/3d-pcb-viewer.md) - Real-time rendering for all hardware types
+- [Shared 3D Viewer Architecture](./3d-visualization/shared-3d-viewer-architecture.md) - Unified visualization engine for all domains
+- [3D PCB Viewer](./3d-visualization/3d-pcb-viewer.md) - PCB-specific visualization
 - [STEP & 3D Model Integration](./3d-visualization/step-3d-models.md) - Mechanical fit checks
 
 #### 1.5 Shared Simulation Engines

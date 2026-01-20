@@ -4,6 +4,14 @@
 
 Hardware Tool provides real-time 3D visualization of quantum processor layouts, including layer-by-layer views, electromagnetic field distributions, and cryogenic integration previews.
 
+> **Inherits from:** [Shared 3D Viewer Architecture](../../3d-visualization/shared-3d-viewer-architecture.md)
+>
+> This viewer extends the unified 3D visualization engine with quantum-specific rendering modes and overlays. All standard navigation, cross-section, measurement, and export capabilities are inherited from the shared architecture.
+
+---
+
+## Quantum-Specific Extensions
+
 ## Viewer Features
 
 ```rust

@@ -4,6 +4,14 @@
 
 Hardware Tool includes a real-time 3D PCB viewer powered by Bevy, providing photorealistic visualization of board designs with component models, copper layers, and mechanical features. The viewer supports raytracing for high-quality renders.
 
+> **Inherits from:** [Shared 3D Viewer Architecture](./shared-3d-viewer-architecture.md)
+>
+> This viewer extends the unified 3D visualization engine with PCB-specific rendering modes and overlays. All standard navigation, cross-section, measurement, and export capabilities are inherited from the shared architecture.
+
+---
+
+## PCB-Specific Extensions
+
 ## Floating 3D Reference Panel
 
 The 3D viewer appears as a **floating panel in the top-right corner** of the main workspace, providing constant mechanical awareness while working in schematic or PCB views.

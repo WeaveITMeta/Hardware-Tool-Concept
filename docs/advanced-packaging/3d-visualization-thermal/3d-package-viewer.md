@@ -4,6 +4,14 @@
 
 Hardware Tool provides real-time 3D visualization of advanced packages, including exploded views, cross-sections, thermal overlays, and stress distribution for multi-die assemblies.
 
+> **Inherits from:** [Shared 3D Viewer Architecture](../../3d-visualization/shared-3d-viewer-architecture.md)
+>
+> This viewer extends the unified 3D visualization engine with packaging-specific rendering modes and overlays. All standard navigation, cross-section, measurement, and export capabilities are inherited from the shared architecture.
+
+---
+
+## Packaging-Specific Extensions
+
 ## Viewer Features
 
 ```rust
