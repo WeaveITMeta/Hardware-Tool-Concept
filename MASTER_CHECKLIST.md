@@ -412,7 +412,7 @@ Use these keywords to navigate to relevant `.md` files:
 | 1.14.11 | SPICE netlist export | ✅ | `spice.rs` | 6 | For simulation |
 | 1.14.12 | Circuit JSON export | 🔄 | `circuit.rs` | - | IR format |
 | 1.14.13 | PDF schematic export | ✅ | `pdf_export.rs` | 6 | Print-ready |
-| 1.14.14 | SVG schematic export | 📋 | - | - | Vector graphics |
+| 1.14.14 | SVG schematic export | ✅ | `svg_export.rs` | 7 | Vector graphics |
 | 1.14.15 | PNG schematic export | 📋 | - | - | Raster image |
 
 ### 1.15 Command & History
@@ -871,13 +871,13 @@ Use these keywords to navigate to relevant `.md` files:
 
 | Phase | Total Items | Complete | In Progress | Planned |
 |-------|-------------|----------|-------------|---------|
-| Phase 1: Foundation | 234 | 96 | 4 | 134 |
+| Phase 1: Foundation | 234 | 97 | 4 | 133 |
 | Phase 2: Professional | 72 | 10 | 0 | 62 |
 | Phase 3: Innovation | 56 | 12 | 0 | 44 |
 | Phase 4: AI Integration | 22 | 0 | 0 | 22 |
 | Phase 5: Ecosystem | 25 | 0 | 0 | 25 |
 | UI Framework | 54 | 0 | 1 | 53 |
-| **Total** | **463** | **118** | **5** | **340** |
+| **Total** | **463** | **119** | **5** | **339** |
 
 **Overall Progress:** ~25% complete (Phase 1: ~39%)
 
@@ -886,7 +886,7 @@ Use these keywords to navigate to relevant `.md` files:
 ## Test Summary
 
 ```
-Total Tests: 116 passing
+Total Tests: 123 passing
 
 hwt-core:
   - bom: 8
