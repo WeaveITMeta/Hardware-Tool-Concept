@@ -47,7 +47,10 @@ These modules are shared across ALL hardware domains, providing consistent proje
 - [Shared Project Architecture](./core-architecture/shared-project-architecture.md) - Unified project format for any hardware type
 - [Project Structure & Management](./core-architecture/project-structure-management.md) - PCB project specifics
 - [Unified Project File Format](./core-architecture/unified-project-file-format.md) - .hwt format specification
+- [Data Model Specification](./core-architecture/data-model-specification.md) - Schema, validation, versioning
 - [Circuit JSON as Intermediate Representation](./core-architecture/circuit-json-ir.md) - Universal data model
+- [Netlist Formats](./core-architecture/netlist-formats.md) - SPICE, Verilog, EDIF interchange
+- [Constraint Management](./core-architecture/constraint-management.md) - Timing, placement, routing constraints
 - [Programmatic / Code-First Design](./core-architecture/programmatic-design.md) - Rust-native hardware description
 - [Shared Module Consolidation](./core-architecture/shared-module-consolidation.md) - Architecture inheritance patterns
 
@@ -84,6 +87,8 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 - [Shared Real-Time Sync Architecture](./advanced-features/shared-realtime-sync-architecture.md) - Unified cross-probing and live preview
 - [Shared Export/Import Architecture](./advanced-features/shared-export-import-architecture.md) - Unified export workflow for all formats
+- [Testing & Debug](./advanced-features/testing-debug.md) - DFT, JTAG, test points, debug probes
+- [Documentation Generation](./advanced-features/documentation-generation.md) - Schematics PDF, BOM, fab notes
 - [Undo/Redo & Versioning](./advanced-features/undo-redo-versioning.md) - Command-based history
 - [Command-Line Interface](./advanced-features/cli.md) - Batch processing, automation
 - [Calculator Tools](./advanced-features/calculator-tools.md) - Domain-specific calculators
@@ -91,14 +96,22 @@ These modules are shared across ALL hardware domains, providing consistent proje
 - [Variant Manager](./advanced-features/variant-manager.md) - Design exploration
 - [Digital Twin & AR Debug](./advanced-features/digital-twin-ar.md) - Live simulation overlay
 
-#### 1.7 AI Integration (All Domains)
+#### 1.7 Platform Infrastructure
+
+- [PDK & Process Integration](./core-architecture/pdk-process-integration.md) - Foundry PDK support
+- [Plugin & Extension Architecture](./core-architecture/plugin-extension-architecture.md) - Third-party plugins
+- [Manufacturing Integration](./core-architecture/manufacturing-integration.md) - JLCPCB, PCBWay, foundries
+- [Cloud & Server Architecture](./core-architecture/cloud-server-architecture.md) - Desktop, team, cloud deployment
+- [Localization & i18n](./core-architecture/localization-i18n.md) - Multi-language, unit systems
+
+#### 1.8 AI Integration (All Domains)
 
 - [API Keys Configuration](./ai-integration/api-keys-configuration.md) - Multi-provider setup
 - [Native AI Design Assistant](./ai-integration/native-ai-assistant.md) - First-party AI
 - [AI-Powered Optimization](./ai-integration/ai-routing-optimization.md) - Routing, placement
 - [Generative AI Design](./advanced-features/generative-ai-design.md) - Spec-to-design
 
-#### 1.8 UX/UI Design (All Domains)
+#### 1.9 UX/UI Design (All Domains)
 
 - [Hardware Domain Modes](./ux-ui-design/hardware-domain-modes.md) - Mode switching UI for each domain
 - [Main Window Layout](./ux-ui-design/main-window-layout.md) - Adaptive interface
