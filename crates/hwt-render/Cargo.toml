@@ -1,0 +1,16 @@
+[package]
+name = "hwt-render"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Bevy-based 3D rendering engine for Hardware Tool"
+
+[dependencies]
+hwt-core = { path = "../hwt-core" }
+bevy.workspace = true
+glam.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true

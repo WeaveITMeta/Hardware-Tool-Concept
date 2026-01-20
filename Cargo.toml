@@ -1,0 +1,76 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/hwt-core",
+    "crates/hwt-ui",
+    "crates/hwt-render",
+    "crates/hwt-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+authors = ["WeaveIT Meta"]
+license = "Apache-2.0"
+repository = "https://github.com/WeaveITMeta/Hardware-Tool"
+description = "One Hardware Tool That Does It All - Unified EDA for PCB, IC, Quantum, MEMS, RF, and Advanced Packaging"
+keywords = ["eda", "pcb", "ic", "hardware", "cad"]
+categories = ["development-tools", "graphics", "simulation"]
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Async runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# Error handling
+thiserror = "2.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# CLI
+clap = { version = "4.0", features = ["derive"] }
+
+# UI (Slint)
+slint = "1.9"
+
+# 3D Rendering (Bevy)
+bevy = { version = "0.15", features = ["dynamic_linking"] }
+
+# Math and geometry
+glam = "0.29"
+nalgebra = "0.33"
+
+# UUID
+uuid = { version = "1.0", features = ["v4", "serde"] }
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+
+# File watching
+notify = "7.0"
+
+# Compression
+lz4_flex = "0.11"
+
+# Hashing
+xxhash-rust = { version = "0.8", features = ["xxh3"] }
+
+# Testing
+pretty_assertions = "1.0"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

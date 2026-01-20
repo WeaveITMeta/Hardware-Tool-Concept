@@ -1,0 +1,17 @@
+[package]
+name = "hwt-ui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Slint-based UI shell for Hardware Tool"
+
+[dependencies]
+hwt-core = { path = "../hwt-core" }
+hwt-render = { path = "../hwt-render" }
+slint.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[build-dependencies]
+slint-build = "1.9"
