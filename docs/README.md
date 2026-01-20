@@ -1,14 +1,20 @@
 # Hardware Tool Documentation
 
-**The Universal Hardware Design Platform**
+**One Hardware Tool That Does It All**
 
-*One unified environment for ALL hardware: PCBs, Integrated Circuits, Quantum Processors, MEMS/Sensors, RF/Photonics, and Advanced Packaging.*
+*Design ANY hardware — PCBs, Integrated Circuits, Quantum Processors, MEMS/Sensors, RF/Photonics, and Advanced Packaging — in ONE unified environment.*
 
 ---
 
 ## Platform Overview
 
-Hardware Tool is a revolutionary, pure-Rust EDA suite that transcends traditional boundaries between hardware domains. Whether you're designing a simple PCB, a complex ASIC, a quantum processor, a MEMS accelerometer, an RF front-end, or a multi-die chiplet system — Hardware Tool provides a unified platform with consistent workflows, shared simulation engines, and seamless integration.
+Hardware Tool is a revolutionary, pure-Rust EDA suite that transcends traditional boundaries between hardware domains. Whether you're designing a simple PCB, a complex ASIC, a quantum processor, a MEMS accelerometer, an RF front-end, or a multi-die chiplet system — **one tool handles it all** with consistent workflows, shared engines, and seamless integration.
+
+**One Library System** — Same browser, search, and versioning for symbols, cells, gates, structures, and dies.  
+**One DRC Engine** — Same rule engine, reporting, and exclusions across all domains.  
+**One 3D Viewer** — Same navigation, cross-section, and export for any hardware type.  
+**One Simulation Framework** — Same job manager, results viewer, and optimization for all solvers.  
+**One Sync Engine** — Same cross-probing and live preview between any abstract and physical views.
 
 **Core Technologies:** Rust + Slint + Bevy 2D/3D + Multi-Physics Simulation  
 **Output Formats:** Gerber RS-274X, IPC-2581, ODB++, GDSII, OASIS, LEF/DEF, Touchstone
@@ -75,6 +81,7 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 #### 1.6 Shared Productivity Tools
 
+- [Shared Real-Time Sync Architecture](./advanced-features/shared-realtime-sync-architecture.md) - Unified cross-probing and live preview
 - [Undo/Redo & Versioning](./advanced-features/undo-redo-versioning.md) - Command-based history
 - [Command-Line Interface](./advanced-features/cli.md) - Batch processing, automation
 - [Calculator Tools](./advanced-features/calculator-tools.md) - Domain-specific calculators

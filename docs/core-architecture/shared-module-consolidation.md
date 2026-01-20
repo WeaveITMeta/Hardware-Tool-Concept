@@ -167,28 +167,26 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ---
 
-### 8. Real-Time Sync/Preview
+### 8. Real-Time Sync/Preview ✓ CONSOLIDATED
 
-| Current State | Consolidation Target |
-|---------------|---------------------|
-| `advanced-features/realtime-preview.md` | Shared sync architecture |
-| `ic-design/.../real-time-rtl-to-layout-sync.md` | IC sync |
-| `quantum-hardware/.../real-time-circuit-to-layout-sync.md` | Quantum sync |
-| `mems-sensors/.../real-time-mechanical-to-electrical-sync.md` | MEMS sync |
-| `rf-photonics/.../real-time-schematic-to-em-sync.md` | RF sync |
-| `advanced-packaging/.../real-time-die-to-package-sync.md` | Packaging sync |
+| Shared Doc | Domain Extensions |
+|------------|-------------------|
+| `advanced-features/shared-realtime-sync-architecture.md` | PCB, IC, Quantum, MEMS, RF, Packaging sync |
 
-**Causal Keywords:** `real-time`, `sync`, `live preview`, `bidirectional`
+**Causal Keywords:** `real-time`, `sync`, `live preview`, `bidirectional`, `cross-probe`
 
 **Shared Components:**
-- Change detection
-- Incremental update
-- Conflict resolution
-- Performance optimization
+- Bidirectional sync engine
+- Cross-probing
+- Conflict resolution UI
+- Change tracking & indicators
+- Incremental updates
+- CLI commands
 
 **Domain-Specific:**
-- What syncs (schematic↔layout, RTL↔gates, etc.)
-- Sync rules
+- View pairs (schematic↔layout, RTL↔gates, circuit↔qubits)
+- Sync item types
+- Domain-specific conflict rules
 
 ---
 
@@ -233,9 +231,9 @@ quantum-hardware/3d-visualization-cryogenics/
 | 2 | DRC | ✓ Done | High |
 | 3 | Libraries | ✓ Done | High |
 | 4 | Simulation | ✓ Done | High |
-| 5 | CLI | Already shared | Medium |
-| 6 | Project Structure | Pending | Medium |
-| 7 | Real-Time Sync | Pending | Medium |
+| 5 | Real-Time Sync | ✓ Done | Medium |
+| 6 | CLI | Already shared | Medium |
+| 7 | Project Structure | Pending | Medium |
 | 8 | Export/Import | Pending | Medium |
 
 ---

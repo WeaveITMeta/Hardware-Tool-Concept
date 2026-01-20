@@ -4,6 +4,14 @@
 
 Hardware Tool provides live synchronization between schematic and PCB views, enabling rapid design iteration with immediate visual feedback. Changes propagate instantly, allowing designers to see the impact of modifications in real-time.
 
+> **Inherits from:** [Shared Real-Time Sync Architecture](./shared-realtime-sync-architecture.md)
+>
+> This documentation covers PCB-specific schematic-to-layout sync. All standard cross-probing, conflict resolution, and change tracking capabilities are inherited from the shared architecture.
+
+---
+
+## PCB Sync Specifics
+
 ## Live Sync Architecture
 
 ```
