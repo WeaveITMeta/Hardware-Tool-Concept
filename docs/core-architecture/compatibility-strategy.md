@@ -8,53 +8,71 @@ Hardware Tool provides comprehensive import, export, and conversion capabilities
 
 ## Compatibility Matrix
 
+### Legend
+
+| Symbol | Meaning |
+|:------:|---------|
+| ✅ | Full support |
+| ⚠️ | Partial/limited support |
+| ❌ | Not supported |
+
+---
+
 ### PCB Design Tools
 
-| Tool | Import | Export | Live Edit | Convert |
-|------|--------|--------|-----------|---------|
-| **KiCad 7/8** | ✅ Full | ✅ Full | ✅ Yes | ✅ Bidirectional |
-| **Altium Designer** | ✅ Full | ✅ Full | ⚠️ Limited | ✅ Bidirectional |
-| **Eagle** | ✅ Full | ✅ Full | ❌ No | ✅ To HWT |
-| **OrCAD/Allegro** | ✅ Full | ⚠️ Partial | ❌ No | ✅ To HWT |
-| **TSCircuit** | ✅ Native | ✅ Native | ✅ Yes | ✅ Bidirectional |
-| **EasyEDA** | ✅ Full | ⚠️ Partial | ❌ No | ✅ To HWT |
-| **Fusion 360 Electronics** | ✅ Full | ⚠️ Partial | ❌ No | ✅ To HWT |
+| Tool                        | Import      | Export      | Live Edit   | Convert         |
+|:----------------------------|:-----------:|:-----------:|:-----------:|:---------------:|
+| KiCad 7/8                   | ✅ Full     | ✅ Full     | ✅ Yes      | ✅ Bidirectional |
+| Altium Designer             | ✅ Full     | ✅ Full     | ⚠️ Limited  | ✅ Bidirectional |
+| Eagle                       | ✅ Full     | ✅ Full     | ❌ No       | ✅ To HWT        |
+| OrCAD / Allegro             | ✅ Full     | ⚠️ Partial  | ❌ No       | ✅ To HWT        |
+| TSCircuit                   | ✅ Native   | ✅ Native   | ✅ Yes      | ✅ Bidirectional |
+| EasyEDA                     | ✅ Full     | ⚠️ Partial  | ❌ No       | ✅ To HWT        |
+| Fusion 360 Electronics      | ✅ Full     | ⚠️ Partial  | ❌ No       | ✅ To HWT        |
+
+---
 
 ### IC Design Tools
 
-| Tool | Import | Export | Live Edit | Convert |
-|------|--------|--------|-----------|---------|
-| **Cadence Virtuoso** | ✅ OA/GDSII | ✅ GDSII | ❌ No | ✅ To HWT |
-| **Synopsys Custom Compiler** | ✅ OA/GDSII | ✅ GDSII | ❌ No | ✅ To HWT |
-| **Magic VLSI** | ✅ Full | ✅ Full | ⚠️ Limited | ✅ Bidirectional |
-| **Klayout** | ✅ Full | ✅ Full | ⚠️ Limited | ✅ Bidirectional |
-| **OpenROAD** | ✅ LEF/DEF | ✅ LEF/DEF | ❌ No | ✅ Bidirectional |
+| Tool                        | Import      | Export      | Live Edit   | Convert         |
+|:----------------------------|:-----------:|:-----------:|:-----------:|:---------------:|
+| Cadence Virtuoso            | ✅ OA/GDSII | ✅ GDSII    | ❌ No       | ✅ To HWT        |
+| Synopsys Custom Compiler    | ✅ OA/GDSII | ✅ GDSII    | ❌ No       | ✅ To HWT        |
+| Magic VLSI                  | ✅ Full     | ✅ Full     | ⚠️ Limited  | ✅ Bidirectional |
+| Klayout                     | ✅ Full     | ✅ Full     | ⚠️ Limited  | ✅ Bidirectional |
+| OpenROAD                    | ✅ LEF/DEF  | ✅ LEF/DEF  | ❌ No       | ✅ Bidirectional |
 
-### RF/Microwave Tools
+---
 
-| Tool | Import | Export | Live Edit | Convert |
-|------|--------|--------|-----------|---------|
-| **Keysight ADS** | ✅ Full | ⚠️ Partial | ❌ No | ✅ To HWT |
-| **AWR Microwave Office** | ✅ Full | ⚠️ Partial | ❌ No | ✅ To HWT |
-| **Ansys HFSS** | ⚠️ Geometry | ⚠️ Geometry | ❌ No | ⚠️ Partial |
-| **CST Studio** | ⚠️ Geometry | ⚠️ Geometry | ❌ No | ⚠️ Partial |
-| **Sonnet** | ✅ Full | ✅ Full | ❌ No | ✅ Bidirectional |
+### RF / Microwave Tools
+
+| Tool                        | Import      | Export      | Live Edit   | Convert         |
+|:----------------------------|:-----------:|:-----------:|:-----------:|:---------------:|
+| Keysight ADS                | ✅ Full     | ⚠️ Partial  | ❌ No       | ✅ To HWT        |
+| AWR Microwave Office        | ✅ Full     | ⚠️ Partial  | ❌ No       | ✅ To HWT        |
+| Ansys HFSS                  | ⚠️ Geometry | ⚠️ Geometry | ❌ No       | ⚠️ Partial       |
+| CST Studio                  | ⚠️ Geometry | ⚠️ Geometry | ❌ No       | ⚠️ Partial       |
+| Sonnet                      | ✅ Full     | ✅ Full     | ❌ No       | ✅ Bidirectional |
+
+---
 
 ### Quantum Design Tools
 
-| Tool | Import | Export | Live Edit | Convert |
-|------|--------|--------|-----------|---------|
-| **Qiskit Metal** | ✅ Full | ✅ Full | ⚠️ Limited | ✅ Bidirectional |
-| **KQCircuits** | ✅ Full | ✅ Full | ⚠️ Limited | ✅ Bidirectional |
-| **Ansys Q3D** | ⚠️ Geometry | ⚠️ Geometry | ❌ No | ⚠️ Partial |
+| Tool                        | Import      | Export      | Live Edit   | Convert         |
+|:----------------------------|:-----------:|:-----------:|:-----------:|:---------------:|
+| Qiskit Metal                | ✅ Full     | ✅ Full     | ⚠️ Limited  | ✅ Bidirectional |
+| KQCircuits                  | ✅ Full     | ✅ Full     | ⚠️ Limited  | ✅ Bidirectional |
+| Ansys Q3D                   | ⚠️ Geometry | ⚠️ Geometry | ❌ No       | ⚠️ Partial       |
+
+---
 
 ### MEMS Tools
 
-| Tool | Import | Export | Live Edit | Convert |
-|------|--------|--------|-----------|---------|
-| **Coventor MEMS+** | ⚠️ GDSII | ✅ GDSII | ❌ No | ⚠️ Partial |
-| **IntelliSense** | ⚠️ GDSII | ✅ GDSII | ❌ No | ⚠️ Partial |
-| **L-Edit** | ✅ Full | ✅ Full | ❌ No | ✅ Bidirectional |
+| Tool                        | Import      | Export      | Live Edit   | Convert         |
+|:----------------------------|:-----------:|:-----------:|:-----------:|:---------------:|
+| Coventor MEMS+              | ⚠️ GDSII    | ✅ GDSII    | ❌ No       | ⚠️ Partial       |
+| IntelliSense                | ⚠️ GDSII    | ✅ GDSII    | ❌ No       | ⚠️ Partial       |
+| L-Edit                      | ✅ Full     | ✅ Full     | ❌ No       | ✅ Bidirectional |
 
 ---
 
