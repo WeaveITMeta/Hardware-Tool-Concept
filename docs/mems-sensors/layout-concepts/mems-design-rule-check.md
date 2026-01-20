@@ -4,6 +4,14 @@
 
 Hardware Tool provides comprehensive MEMS-specific design rule checking that validates mechanical structures, etch patterns, and process constraints. DRC rules are foundry-specific and cover release hole spacing, anchor dimensions, and structural integrity.
 
+> **Inherits from:** [Shared DRC Architecture](../../advanced-features/shared-drc-architecture.md)
+>
+> This checker extends the unified DRC engine with MEMS-specific rule categories (structural, etch holes, release). All standard severity levels, exclusion management, reporting, and CLI commands are inherited from the shared architecture.
+
+---
+
+## MEMS-Specific Rule Categories
+
 ## MEMS DRC Categories
 
 ```rust

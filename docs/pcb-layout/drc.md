@@ -4,6 +4,14 @@
 
 Design Rule Check (DRC) validates that the PCB layout meets manufacturing constraints and design requirements. Hardware Tool performs comprehensive checks for clearance, connectivity, size, and other critical parameters.
 
+> **Inherits from:** [Shared DRC Architecture](../advanced-features/shared-drc-architecture.md)
+>
+> This checker extends the unified DRC engine with PCB-specific rule categories. All standard severity levels, exclusion management, reporting, and CLI commands are inherited from the shared architecture.
+
+---
+
+## PCB-Specific Rule Categories
+
 ## DRC Categories
 
 ### Clearance Violations

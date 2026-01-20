@@ -4,6 +4,14 @@
 
 Hardware Tool provides comprehensive physical verification for IC designs, including Design Rule Check (DRC), Layout vs Schematic (LVS), and Electrical Rule Check (ERC). Verification integrates with PDK design rules and supports both interactive and batch modes.
 
+> **Inherits from:** [Shared DRC Architecture](../../advanced-features/shared-drc-architecture.md)
+>
+> This checker extends the unified DRC engine with IC-specific rule categories (width, spacing, enclosure, density, antenna). All standard severity levels, exclusion management, reporting, and CLI commands are inherited from the shared architecture.
+
+---
+
+## IC-Specific Rule Categories
+
 ## Design Rule Check (DRC)
 
 ```rust

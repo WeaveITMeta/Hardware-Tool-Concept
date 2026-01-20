@@ -46,7 +46,8 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 #### 1.2 Shared Design Capture
 
-- [Symbols & Libraries](./schematic-editor/symbols-libraries.md) - Component symbols across all domains
+- [Shared Library Architecture](./core-architecture/shared-library-architecture.md) - Unified library management for all domains
+- [Symbols & Libraries](./schematic-editor/symbols-libraries.md) - PCB schematic symbols
 - [Hierarchical Design](./schematic-editor/hierarchical-schematics.md) - Multi-level hierarchy for any hardware
 - [Wiring & Connectivity](./schematic-editor/wiring-connectivity.md) - Nets, buses, power distribution
 - [Annotation & Designators](./schematic-editor/annotation-reference-designators.md) - Consistent naming conventions
@@ -55,7 +56,7 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 - [Component/Device Placement](./pcb-layout/component-placement.md) - Placement algorithms for all domains
 - [Interactive Routing](./pcb-layout/interactive-routing.md) - Push-and-shove, differential pairs
-- [Design Rule Check (DRC)](./pcb-layout/drc.md) - Extensible rule engine
+- [Shared DRC Architecture](./advanced-features/shared-drc-architecture.md) - Unified design rule check engine
 - [Multi-Layer Support](./pcb-layout/multi-layer.md) - Layer stack management
 
 #### 1.4 Shared 3D Visualization

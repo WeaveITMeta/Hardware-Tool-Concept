@@ -4,6 +4,14 @@
 
 Footprints define the physical representation of components on a PCB, including pad geometry, silkscreen outlines, courtyard boundaries, and 3D model references. Hardware Tool provides comprehensive footprint libraries and tools for creating custom footprints.
 
+> **Inherits from:** [Shared Library Architecture](../core-architecture/shared-library-architecture.md)
+>
+> This documentation covers PCB-specific footprint definitions. All standard library browser, search, versioning, and import/export capabilities are inherited from the shared architecture.
+
+---
+
+## PCB Footprint Specifics
+
 ## Footprint Anatomy
 
 ### Layer Structure

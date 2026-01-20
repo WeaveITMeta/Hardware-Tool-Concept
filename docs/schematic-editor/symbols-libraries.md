@@ -4,6 +4,14 @@
 
 Symbols are the graphical representations of electronic components in schematics. Hardware Tool provides a comprehensive library system supporting custom symbols, official libraries, and hierarchical component definitions.
 
+> **Inherits from:** [Shared Library Architecture](../core-architecture/shared-library-architecture.md)
+>
+> This documentation covers PCB/schematic-specific symbol definitions. All standard library browser, search, versioning, and import/export capabilities are inherited from the shared architecture.
+
+---
+
+## PCB Symbol Specifics
+
 ## Symbol Anatomy
 
 ### Basic Structure

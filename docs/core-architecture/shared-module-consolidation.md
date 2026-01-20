@@ -36,29 +36,26 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ---
 
-### 2. Design Rule Check (DRC)
+### 2. Design Rule Check (DRC) ✓ CONSOLIDATED
 
-| Current State | Consolidation Target |
-|---------------|---------------------|
-| `pcb-layout/drc.md` | Shared DRC engine architecture |
-| `ic-design/.../physical-verification-drc-lvs.md` | IC-specific rules |
-| `mems-sensors/.../mems-design-rule-check.md` | MEMS-specific rules |
-| `quantum-hardware/.../quantum-design-rule-check.md` | Quantum-specific rules |
-| `rf-photonics/.../rf-design-rule-check.md` | RF-specific rules |
-| `advanced-packaging/.../packaging-design-rule-check.md` | Packaging-specific rules |
+| Shared Doc | Domain Extensions |
+|------------|-------------------|
+| `advanced-features/shared-drc-architecture.md` | PCB, IC, Quantum, MEMS, RF, Packaging DRC |
 
 **Causal Keywords:** `DRC`, `design rule check`, `violation`, `clearance`, `rule engine`
 
 **Shared Components:**
-- Rule definition format
+- Rule engine architecture
+- Severity levels (Error, Warning, Info, Ignore)
 - Violation reporting UI
-- Batch checking API
-- Waiver management
-- Report generation
+- Exclusion/waiver management
+- Report generation (JSON, CSV, HTML)
+- Real-time checking
+- CLI commands
 
 **Domain-Specific:**
-- Rule sets (PCB clearance vs IC metal spacing vs MEMS etch rules)
-- Severity levels
+- Rule categories (PCB clearance, IC spacing, MEMS etch holes, etc.)
+- Rule values (foundry/manufacturer specific)
 - Fix suggestions
 
 ---
@@ -123,30 +120,26 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ---
 
-### 6. Libraries & Components
+### 6. Libraries & Components ✓ CONSOLIDATED
 
-| Current State | Consolidation Target |
-|---------------|---------------------|
-| `schematic-editor/symbols-libraries.md` | Shared library architecture |
-| `pcb-layout/footprints-libraries.md` | PCB footprints |
-| `ic-design/.../cells-and-libraries.md` | IC cells |
-| `quantum-hardware/.../gates-and-libraries.md` | Quantum gates |
-| `mems-sensors/.../structures-and-libraries.md` | MEMS structures |
-| `rf-photonics/.../rf-components-and-libraries.md` | RF components |
-| `advanced-packaging/.../die-ip-and-libraries.md` | Die IP |
+| Shared Doc | Domain Extensions |
+|------------|-------------------|
+| `core-architecture/shared-library-architecture.md` | Symbols, Footprints, Cells, Gates, Structures, Dies |
 
 **Causal Keywords:** `library`, `libraries`, `component`, `symbol`, `footprint`, `cell`
 
 **Shared Components:**
-- Library file format
+- Library file structure
 - Library browser UI
 - Search and filtering
-- Import/export
-- Version management
+- Import/export formats
+- Version control (Git)
+- Validation system
+- CLI commands
 
 **Domain-Specific:**
-- Component types
-- Properties and parameters
+- Component types (symbols, footprints, cells, gates, structures, dies)
+- Domain properties (pins, pads, timing, fidelity, resonance)
 - Simulation models
 
 ---
@@ -238,16 +231,16 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ## Implementation Priority
 
-| Priority | Module | Effort | Impact |
+| Priority | Module | Status | Impact |
 |----------|--------|--------|--------|
 | 1 | 3D Visualization | ✓ Done | High |
-| 2 | DRC | Medium | High |
-| 3 | Libraries | Medium | High |
-| 4 | Project Structure | Low | Medium |
-| 5 | CLI | Low | Medium |
-| 6 | Simulation | High | High |
-| 7 | Real-Time Sync | Medium | Medium |
-| 8 | Export/Import | Medium | Medium |
+| 2 | DRC | ✓ Done | High |
+| 3 | Libraries | ✓ Done | High |
+| 4 | Project Structure | Pending | Medium |
+| 5 | CLI | Already shared | Medium |
+| 6 | Simulation | Pending | High |
+| 7 | Real-Time Sync | Pending | Medium |
+| 8 | Export/Import | Pending | Medium |
 
 ---
 
