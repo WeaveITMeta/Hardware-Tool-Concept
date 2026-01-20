@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "en-US"
+
+early_access: false
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  auto_title_placeholder: "@coderabbitai"
+  review_status: true
+  poem: false
+  collapse_walkthrough: false
+  sequence_diagrams: true
+  changed_files_summary: true
+  labeling_instructions: []
+  path_filters: []
+  path_instructions:
+    - path: "docs/**/*.md"
+      instructions: |
+        Review documentation for:
+        - Technical accuracy
+        - Consistent formatting (tables, code blocks, headers)
+        - Proper markdown syntax
+        - Cross-reference link validity
+        - Spelling and grammar
+    - path: "src/**/*.rs"
+      instructions: |
+        Review Rust code for:
+        - Memory safety and ownership patterns
+        - Error handling with Result/Option
+        - Performance considerations
+        - Idiomatic Rust patterns
+        - Documentation comments (///)
+    - path: "**/*.toml"
+      instructions: |
+        Review TOML configuration for:
+        - Valid syntax
+        - Dependency version specifications
+        - Feature flags consistency
+  abort_on_close: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    ignore_title_keywords:
+      - "WIP"
+      - "DO NOT MERGE"
+      - "DRAFT"
+    drafts: false
+    base_branches: []
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
+  learnings:
+    scope: "auto"
+  issues:
+    scope: "auto"
+  jira:
+    project_keys: []
+  linear:
+    team_keys: []
+  pull_requests:
+    scope: "auto"
