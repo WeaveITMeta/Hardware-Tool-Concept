@@ -1,13 +1,15 @@
 # Hardware Tool Documentation
 
-**A pure Rust KiCAD/TSCircuit replacement**
+**The Universal Hardware Design Platform**
 
-Rust + Slint + PCB Editor + Bevy 2D/3D  
-Gerber RS-274X (gerber-rs) + IPC-2581 + ODB++ Formats
+*Design ANY hardware: PCBs, Integrated Circuits, Quantum Processors, MEMS, RF/Photonics, and Advanced Packaging — all in one unified Rust-native environment.*
 
-A modern, pure-Rust EDA suite (KiCad + TSCircuit reimagined) built with Slint + Bevy. Fluid schematic/PCB editing, real-time 2D/3D canvas, programmatic code-first design, powerful DRC/ERC/DFM, and full export to Gerber RS-274X, IPC-2581 & ODB++. Fast, native, open-source hardware design that actually feels good to use. 🚀
+Rust + Slint + Bevy 2D/3D + Multi-Physics Simulation  
+Gerber RS-274X + IPC-2581 + ODB++ + GDSII + OASIS
 
-*The next-generation open-source EDA experience — delightful, fast, fluid, and modern.*
+A revolutionary, pure-Rust EDA suite that transcends traditional boundaries. From PCB layout to transistor-level IC design, from superconducting qubits to MEMS accelerometers, from RF amplifiers to photonic circuits — Hardware Tool provides a unified platform for designing any kind of hardware. Built with Slint + Bevy for fluid editing, real-time 3D visualization, physics-based simulation, and AI-powered design assistance.
+
+*The next-generation open-source EDA experience — design any hardware, at any scale, with one tool.*
 
 ---
 
@@ -89,6 +91,41 @@ A modern, pure-Rust EDA suite (KiCad + TSCircuit reimagined) built with Slint + 
 - [Generative AI Design](./advanced-features/generative-ai-design.md) - Spec-to-design, component selection, layout generation
 - [Benchmarking Simulator](./ai-integration/benchmarking-simulator.md) - Real-time physics-based validation
 
+### Integrated Circuit Design
+
+- [IC Design Overview](./ic-design/integrated-circuit-design.md) - Transistor-level schematic, layout, DRC, LVS, GDSII
+- PDK Support - SkyWater 130nm, GF180MCU, IHP SG13G2, commercial PDKs
+- Digital ASIC Flow - RTL synthesis, place & route, timing closure
+- Analog IC Design - Op-amps, ADCs, PLLs, custom layout
+
+### Quantum Hardware Design
+
+- [Quantum Circuit Design](./quantum-hardware/quantum-circuit-design.md) - Superconducting qubits, photonics, trapped ions
+- Transmon & Resonator Design - CPW geometry, coupling, EM simulation
+- Quantum Control - Pulse design, gate optimization, Hamiltonian simulation
+- Fabrication Integration - Process flow, design rules, GDSII export
+
+### MEMS & Sensor Design
+
+- [MEMS Sensor Design](./mems-sensors/mems-sensor-design.md) - Accelerometers, gyroscopes, pressure sensors
+- Multi-Physics Simulation - FEA structural, electrostatic, thermal
+- Foundry Support - PolyMUMPs, SOIMUMPs, ThELMA, XMB10
+- Packaging Integration - Hermetic cavity, wire bond, die attach
+
+### RF, Microwave & Photonics
+
+- [RF/Microwave Design](./rf-photonics/rf-microwave-design.md) - LNA, PA, filters, antennas
+- Smith Chart & Matching - Impedance matching, S-parameters
+- Photonic Integrated Circuits - Silicon photonics, waveguides, modulators
+- EM Simulation - 3D FDTD, mode solver, radiation patterns
+
+### Advanced Packaging & Chiplets
+
+- [Chiplet Integration](./advanced-packaging/chiplet-integration.md) - 2.5D/3D packaging, interposers, UCIe
+- Silicon Interposer - TSV, RDL, micro-bumps, C4 bumps
+- Fan-Out Packaging - FOWLP, RDL routing, ball grid
+- Thermal & Mechanical - Warpage, stress, thermal resistance
+
 ### Appendices
 
 - [Performance Targets](./appendices/performance-targets.md) - Response times, memory usage, benchmarks
@@ -124,8 +161,22 @@ hwt ai route --optimize signal-integrity
 | UI Framework | Slint |
 | 3D Rendering | Bevy |
 | Gerber Export | gerber-rs |
-| File Formats | Gerber RS-274X, IPC-2581, ODB++ |
+| PCB Formats | Gerber RS-274X, IPC-2581, ODB++ |
+| IC Formats | GDSII, OASIS, LEF/DEF |
+| Simulation | SPICE (ngspice), FEM, FDTD, BEM |
 | AI Integration | OpenAI, Anthropic, Google, Local (Ollama) |
+
+## Hardware Domains Supported
+
+| Domain | Capabilities |
+|--------|--------------|
+| **PCB Design** | Schematic capture, layout, routing, DRC, manufacturing output |
+| **Integrated Circuits** | Transistor-level design, PDK support, DRC/LVS, GDSII tape-out |
+| **Quantum Hardware** | Superconducting qubits, photonics, trapped ions, control systems |
+| **MEMS & Sensors** | Accelerometers, gyroscopes, pressure sensors, multi-physics FEA |
+| **RF/Microwave** | LNAs, PAs, filters, antennas, Smith chart, S-parameters |
+| **Photonics** | Silicon photonics, waveguides, ring resonators, modulators |
+| **Advanced Packaging** | Chiplets, 2.5D/3D, interposers, TSV, UCIe, thermal analysis |
 
 ## Core UX Philosophy
 
