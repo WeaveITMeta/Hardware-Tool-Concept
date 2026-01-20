@@ -413,7 +413,7 @@ Use these keywords to navigate to relevant `.md` files:
 | 1.14.12 | Circuit JSON export | 🔄 | `circuit.rs` | - | IR format |
 | 1.14.13 | PDF schematic export | ✅ | `pdf_export.rs` | 6 | Print-ready |
 | 1.14.14 | SVG schematic export | ✅ | `svg_export.rs` | 7 | Vector graphics |
-| 1.14.15 | PNG schematic export | 📋 | - | - | Raster image |
+| 1.14.15 | PNG schematic export | ✅ | `png_export.rs` | 9 | Raster image |
 
 ### 1.15 Command & History
 
@@ -871,13 +871,13 @@ Use these keywords to navigate to relevant `.md` files:
 
 | Phase | Total Items | Complete | In Progress | Planned |
 |-------|-------------|----------|-------------|---------|
-| Phase 1: Foundation | 234 | 97 | 4 | 133 |
+| Phase 1: Foundation | 234 | 98 | 4 | 132 |
 | Phase 2: Professional | 72 | 10 | 0 | 62 |
 | Phase 3: Innovation | 56 | 12 | 0 | 44 |
 | Phase 4: AI Integration | 22 | 0 | 0 | 22 |
 | Phase 5: Ecosystem | 25 | 0 | 0 | 25 |
 | UI Framework | 54 | 0 | 1 | 53 |
-| **Total** | **463** | **119** | **5** | **339** |
+| **Total** | **463** | **120** | **5** | **338** |
 
 **Overall Progress:** ~25% complete (Phase 1: ~39%)
 
@@ -886,7 +886,7 @@ Use these keywords to navigate to relevant `.md` files:
 ## Test Summary
 
 ```
-Total Tests: 123 passing
+Total Tests: 132 passing
 
 hwt-core:
   - bom: 8
