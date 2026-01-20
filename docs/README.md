@@ -63,6 +63,7 @@ A modern, pure-Rust EDA suite (KiCad + TSCircuit reimagined) built with Slint + 
 - [Undo/Redo & Versioning](./advanced-features/undo-redo-versioning.md) - Command-based history, crash recovery
 - [Command-Line Interface (CLI)](./advanced-features/cli.md) - Batch processing, export, automation
 - [Calculator Tools](./advanced-features/calculator-tools.md) - Track width, via current, impedance, thermal overlay, test points
+- [Thermal Simulation](./advanced-features/thermal-simulation.md) - Physics-based Joule heating, FEM solver, heat maps
 - [Layout Properties & Constraints](./advanced-features/layout-properties-constraints.md) - Manual nudges, keep-out zones
 - [Real-Time Preview & Iteration](./advanced-features/realtime-preview.md) - Live schematic-to-PCB sync
 - [Variant Manager](./advanced-features/variant-manager.md) - What-if design exploration, cost comparison, variant BOMs
