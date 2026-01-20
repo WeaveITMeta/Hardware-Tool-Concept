@@ -4,6 +4,14 @@
 
 Hardware Tool integrates with SPICE simulators (primarily ngspice) to enable circuit simulation directly from schematics. Export netlists, run simulations, and visualize results without leaving the design environment.
 
+> **Inherits from:** [Shared Simulation Architecture](../advanced-features/shared-simulation-architecture.md)
+>
+> This documentation covers PCB/schematic-specific SPICE simulation. All standard job management, results visualization, parameter sweeps, and optimization capabilities are inherited from the shared architecture.
+
+---
+
+## PCB SPICE Specifics
+
 ## Simulation Workflow
 
 ```

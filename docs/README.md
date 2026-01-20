@@ -67,6 +67,7 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 #### 1.5 Shared Simulation Engines
 
+- [Shared Simulation Architecture](./advanced-features/shared-simulation-architecture.md) - Unified simulation infrastructure
 - [Thermal Simulation](./advanced-features/thermal-simulation.md) - FEM-based heat analysis
 - [Signal & Power Integrity](./advanced-features/signal-power-integrity.md) - S-parameters, PDN analysis
 - [Electromagnetic Simulation](./advanced-features/electromagnetic-simulation.md) - EMC/EMI, field solvers

@@ -144,29 +144,25 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ---
 
-### 7. Simulation Integration
+### 7. Simulation Integration ✓ CONSOLIDATED
 
-| Current State | Consolidation Target |
-|---------------|---------------------|
-| `schematic-editor/spice-simulation.md` | Shared simulation architecture |
-| `ic-design/.../rtl-simulation-integration.md` | RTL simulation |
-| `quantum-hardware/.../quantum-simulation-integration.md` | Quantum simulation |
-| `mems-sensors/.../mems-simulation-integration.md` | MEMS FEA |
-| `rf-photonics/.../rf-simulation-integration.md` | RF/EM simulation |
-| `advanced-packaging/.../packaging-simulation-integration.md` | Thermal/mechanical |
+| Shared Doc | Domain Extensions |
+|------------|-------------------|
+| `advanced-features/shared-simulation-architecture.md` | SPICE, RTL, Quantum, MEMS FEA, RF/EM, Thermal |
 
 **Causal Keywords:** `simulation`, `simulate`, `solver`, `analysis`, `integration`
 
 **Shared Components:**
-- Simulation job management
-- Results visualization
+- Job manager (queue, schedule, monitor)
+- Results visualization (waveforms, plots)
 - Parameter sweeps
-- Optimization loops
-- Report generation
+- Optimization engine
+- Caching & incremental simulation
+- CLI commands
 
 **Domain-Specific:**
-- Solver types (SPICE, FEM, FDTD, etc.)
-- Analysis types
+- Solver types (SPICE, FEM, FDTD, STA, etc.)
+- Analysis types (DC, AC, modal, S-parameters)
 - Model formats
 
 ---
@@ -236,9 +232,9 @@ quantum-hardware/3d-visualization-cryogenics/
 | 1 | 3D Visualization | ✓ Done | High |
 | 2 | DRC | ✓ Done | High |
 | 3 | Libraries | ✓ Done | High |
-| 4 | Project Structure | Pending | Medium |
+| 4 | Simulation | ✓ Done | High |
 | 5 | CLI | Already shared | Medium |
-| 6 | Simulation | Pending | High |
+| 6 | Project Structure | Pending | Medium |
 | 7 | Real-Time Sync | Pending | Medium |
 | 8 | Export/Import | Pending | Medium |
 
