@@ -44,7 +44,8 @@ These modules are shared across ALL hardware domains, providing consistent proje
 
 #### 1.1 Core Architecture (All Domains)
 
-- [Project Structure & Management](./core-architecture/project-structure-management.md) - Unified project format for any hardware type
+- [Shared Project Architecture](./core-architecture/shared-project-architecture.md) - Unified project format for any hardware type
+- [Project Structure & Management](./core-architecture/project-structure-management.md) - PCB project specifics
 - [Unified Project File Format](./core-architecture/unified-project-file-format.md) - .hwt format specification
 - [Circuit JSON as Intermediate Representation](./core-architecture/circuit-json-ir.md) - Universal data model
 - [Programmatic / Code-First Design](./core-architecture/programmatic-design.md) - Rust-native hardware description
@@ -82,6 +83,7 @@ These modules are shared across ALL hardware domains, providing consistent proje
 #### 1.6 Shared Productivity Tools
 
 - [Shared Real-Time Sync Architecture](./advanced-features/shared-realtime-sync-architecture.md) - Unified cross-probing and live preview
+- [Shared Export/Import Architecture](./advanced-features/shared-export-import-architecture.md) - Unified export workflow for all formats
 - [Undo/Redo & Versioning](./advanced-features/undo-redo-versioning.md) - Command-based history
 - [Command-Line Interface](./advanced-features/cli.md) - Batch processing, automation
 - [Calculator Tools](./advanced-features/calculator-tools.md) - Domain-specific calculators

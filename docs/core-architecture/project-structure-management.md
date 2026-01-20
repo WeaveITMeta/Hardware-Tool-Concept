@@ -4,6 +4,14 @@
 
 Hardware Tool uses a unified project file format designed for modern EDA workflows, combining the best aspects of KiCAD's `.kicad_pro` structure with enhanced Rust-native capabilities.
 
+> **Inherits from:** [Shared Project Architecture](./shared-project-architecture.md)
+>
+> This documentation covers PCB-specific project structure. All standard project format, version control, build system, and search capabilities are inherited from the shared architecture.
+
+---
+
+## PCB Project Specifics
+
 ## Project File Format
 
 ### `.hwt` Project Format

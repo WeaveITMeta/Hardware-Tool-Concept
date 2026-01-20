@@ -93,30 +93,26 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ---
 
-### 5. Project Structure & Management
+### 5. Project Structure & Management ✓ CONSOLIDATED
 
-| Current State | Consolidation Target |
-|---------------|---------------------|
-| `core-architecture/project-structure-management.md` | Shared project architecture |
-| `ic-design/core-architecture/ic-project-structure-and-management.md` | IC extensions |
-| `quantum-hardware/core-architecture/quantum-project-structure-and-management.md` | Quantum extensions |
-| `mems-sensors/core-architecture/mems-project-structure-and-management.md` | MEMS extensions |
-| `rf-photonics/core-architecture/rf-project-structure-and-management.md` | RF extensions |
-| `advanced-packaging/core-architecture/chiplet-project-structure-and-management.md` | Packaging extensions |
+| Shared Doc | Domain Extensions |
+|------------|-------------------|
+| `core-architecture/shared-project-architecture.md` | PCB, IC, Quantum, MEMS, RF, Packaging projects |
 
 **Causal Keywords:** `project structure`, `project management`, `.hwt`, `directory`, `workspace`
 
 **Shared Components:**
-- `.hwt` file format
-- Directory structure
-- Git integration
-- Multi-project workspaces
-- Dependencies
+- `.hwt` TOML-based project format
+- Directory structure conventions
+- Git integration & `.hwtignore`
+- Build system (validate, simulate, export)
+- Project-wide search
+- CLI commands
 
 **Domain-Specific:**
 - Domain file extensions (`.hwt_ic`, `.hwt_quantum`, etc.)
 - PDK/process references
-- Domain-specific metadata
+- Domain-specific sections in project file
 
 ---
 
@@ -190,24 +186,25 @@ quantum-hardware/3d-visualization-cryogenics/
 
 ---
 
-### 9. Export/Import & Interchange
+### 9. Export/Import & Interchange ✓ CONSOLIDATED
 
-| Current State | Consolidation Target |
-|---------------|---------------------|
-| Various domain-specific export docs | Shared export architecture |
+| Shared Doc | Domain Extensions |
+|------------|-------------------|
+| `advanced-features/shared-export-import-architecture.md` | Gerber, GDSII, Touchstone, ODB++, etc. |
 
 **Causal Keywords:** `export`, `import`, `interchange`, `format`
 
 **Shared Components:**
-- Export job management
-- Progress reporting
-- Error handling
-- Batch export
-- Format detection
+- Export job manager (queue, progress, cancellation)
+- Pre-export validation
+- Batch processing
+- Export history & re-export
+- Import preview & conflict resolution
+- CLI commands
 
 **Domain-Specific:**
 - Format implementations (Gerber, GDSII, Touchstone, etc.)
-- Format options
+- Format-specific options
 
 ---
 
@@ -232,9 +229,11 @@ quantum-hardware/3d-visualization-cryogenics/
 | 3 | Libraries | ✓ Done | High |
 | 4 | Simulation | ✓ Done | High |
 | 5 | Real-Time Sync | ✓ Done | Medium |
-| 6 | CLI | Already shared | Medium |
-| 7 | Project Structure | Pending | Medium |
-| 8 | Export/Import | Pending | Medium |
+| 6 | Project Structure | ✓ Done | Medium |
+| 7 | Export/Import | ✓ Done | Medium |
+| 8 | CLI | Already shared | Medium |
+| 9 | Undo/Redo | Already shared | Medium |
+| 10 | Thermal | Already shared | Medium |
 
 ---
 
