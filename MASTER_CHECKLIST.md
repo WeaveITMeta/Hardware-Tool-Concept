@@ -220,17 +220,17 @@ Use these keywords to navigate to relevant `.md` files:
 
 | # | Feature | Status | File(s) | Tests | Notes |
 |---|---------|--------|---------|-------|-------|
-| 1.8.1 | Point-to-point routing | 📋 | - | - | Basic click-to-route |
-| 1.8.2 | Route start (X) | 📋 | - | - | Begin trace |
-| 1.8.3 | Route via insert (V) | 📋 | - | - | Add via during route |
-| 1.8.4 | Route layer switch (Space) | 📋 | - | - | Change layer |
-| 1.8.5 | Route width change (+/-) | 📋 | - | - | Adjust trace width |
-| 1.8.6 | Route undo segment (Backspace) | 📋 | - | - | Remove last segment |
-| 1.8.7 | Route cancel (Esc) | 📋 | - | - | Abort route |
-| 1.8.8 | Route mode toggle (/) | 📋 | - | - | Horizontal/vertical first |
-| 1.8.9 | Corner style: sharp | 📋 | - | - | 90° corners |
-| 1.8.10 | Corner style: mitered 45° | 📋 | - | - | Chamfered corners |
-| 1.8.11 | Corner style: rounded | 📋 | - | - | Arc corners |
+| 1.8.1 | Point-to-point routing | ✅ | `routing.rs` | 12 | Basic click-to-route |
+| 1.8.2 | Route start (X) | ✅ | `routing.rs` | - | Begin trace |
+| 1.8.3 | Route via insert (V) | ✅ | `routing.rs` | - | Add via during route |
+| 1.8.4 | Route layer switch (Space) | ✅ | `routing.rs` | - | Change layer |
+| 1.8.5 | Route width change (+/-) | ✅ | `routing.rs` | - | Adjust trace width |
+| 1.8.6 | Route undo segment (Backspace) | ✅ | `routing.rs` | - | Remove last segment |
+| 1.8.7 | Route cancel (Esc) | ✅ | `routing.rs` | - | Abort route |
+| 1.8.8 | Route mode toggle (/) | ✅ | `routing.rs` | - | Horizontal/vertical first |
+| 1.8.9 | Corner style: sharp | ✅ | `routing.rs` | - | 90° corners |
+| 1.8.10 | Corner style: mitered 45° | ✅ | `routing.rs` | - | Chamfered corners |
+| 1.8.11 | Corner style: rounded | 📋 | - | - | Arc corners (placeholder) |
 | 1.8.12 | Push-and-shove routing | 📋 | - | - | Move existing traces |
 | 1.8.13 | Walkaround routing | 📋 | - | - | Route around obstacles |
 | 1.8.14 | Highlight net during route | 📋 | - | - | Visual feedback |
@@ -871,27 +871,28 @@ Use these keywords to navigate to relevant `.md` files:
 
 | Phase | Total Items | Complete | In Progress | Planned |
 |-------|-------------|----------|-------------|---------|
-| Phase 1: Foundation | 234 | 81 | 4 | 149 |
+| Phase 1: Foundation | 234 | 91 | 4 | 139 |
 | Phase 2: Professional | 72 | 10 | 0 | 62 |
 | Phase 3: Innovation | 56 | 12 | 0 | 44 |
 | Phase 4: AI Integration | 22 | 0 | 0 | 22 |
 | Phase 5: Ecosystem | 25 | 0 | 0 | 25 |
 | UI Framework | 54 | 0 | 1 | 53 |
-| **Total** | **463** | **103** | **5** | **355** |
+| **Total** | **463** | **113** | **5** | **345** |
 
-**Overall Progress:** ~23% complete (Phase 1: ~36%)
+**Overall Progress:** ~24% complete (Phase 1: ~39%)
 
 ---
 
 ## Test Summary
 
 ```
-Total Tests: 84 passing
+Total Tests: 96 passing
 
 hwt-core:
   - bom: 8
   - circuit: 1
   - pcb_drc: 6
+  - routing: 12
   - command: 3
   - component: 1
   - constraint: 1
@@ -928,11 +929,11 @@ hwt-core:
 
 ### Short-term (This Month)
 
-1. [ ] Point-to-point routing (1.8.1-1.8.8)
+1. [x] ~~Point-to-point routing (1.8.1-1.8.8)~~ ✅
 2. [ ] Symbol library browser UI (1.3.1)
 3. [x] ~~BOM generation CSV (1.13.11)~~ ✅
 4. [x] ~~Pick-and-place export (1.13.15-1.13.16)~~ ✅
-5. [ ] PCB DRC rules (1.11.10-1.11.17)
+5. [x] ~~PCB DRC rules (1.11.10-1.11.17)~~ ✅
 6. [ ] KiCAD PCB import (1.14.3)
 
 ### Medium-term (Next Quarter)
