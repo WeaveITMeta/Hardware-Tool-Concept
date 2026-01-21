@@ -166,7 +166,9 @@ export component MainWindow inherits Window {
                 
                 // Floating 3D panel (z-index: 1 - above canvas, positioned top-right)
                 if show-3d-panel && !panel-3d-maximized: Floating3DPanel {
-                    x: parent.width - self.width - 16px;
+                    width: 320px;
+                    height: 240px;
+                    x: parent.width - 320px - 16px;
                     y: 16px;
                     maximized: false;
                     
