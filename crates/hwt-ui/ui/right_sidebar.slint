@@ -9,33 +9,42 @@ export component PropertyRow inherits Rectangle {
     in property <bool> editable: true;
     callback value-changed(string);
     
-    height: 28px;
+    height: 32px;
     background: transparent;
     
     HorizontalLayout {
-        padding-left: Theme.spacing-md;
-        padding-right: Theme.spacing-md;
+        padding-left: Theme.spacing-sm;
+        padding-right: Theme.spacing-sm;
+        spacing: Theme.spacing-sm;
         
         Text {
             text: label;
             color: Theme.text-secondary;
             font-size: 12px;
             vertical-alignment: center;
-            width: 80px;
+            min-width: 70px;
         }
         
         if editable: Rectangle {
-            background: Theme.bg-tertiary;
+            background: Theme.bg-primary;
             border-radius: Theme.radius-sm;
+            border-width: 1px;
+            border-color: Theme.border-subtle;
+            height: 24px;
             
-            TextInput {
-                text: value;
-                font-size: 12px;
-                color: Theme.text-primary;
-                vertical-alignment: center;
-                horizontal-alignment: left;
+            HorizontalLayout {
+                padding-left: Theme.spacing-sm;
+                padding-right: Theme.spacing-sm;
                 
-                edited => { root.value-changed(self.text); }
+                TextInput {
+                    text: value;
+                    font-size: 12px;
+                    color: Theme.text-primary;
+                    vertical-alignment: center;
+                    horizontal-alignment: left;
+                    
+                    edited => { root.value-changed(self.text); }
+                }
             }
         }
         
@@ -131,33 +140,19 @@ export component RightSidebar inherits Rectangle {
             border-radius: Theme.radius-md;
             
             VerticalLayout {
-                padding: Theme.spacing-sm;
-                spacing: Theme.spacing-xs;
+                padding: Theme.spacing-md;
+                spacing: Theme.spacing-sm;
                 
                 // Header
                 HorizontalLayout {
-                    padding-bottom: Theme.spacing-sm;
-                    
                     Text {
-                        text: "Properties";
+                        text: "Component: " + selected-ref;
                         color: Theme.text-primary;
                         font-size: 13px;
                         font-weight: 500;
                     }
                     
                     Rectangle { }
-                    
-                    Text {
-                        text: "📌";
-                        font-size: 14px;
-                    }
-                }
-                
-                // Component info
-                Text {
-                    text: "Component: " + selected-ref;
-                    color: Theme.text-secondary;
-                    font-size: 12px;
                 }
                 
                 Rectangle {
@@ -191,10 +186,10 @@ export component RightSidebar inherits Rectangle {
             border-radius: Theme.radius-md;
             
             VerticalLayout {
-                padding: Theme.spacing-sm;
-                spacing: Theme.spacing-xs;
+                padding: Theme.spacing-md;
+                spacing: Theme.spacing-sm;
                 
-                // Header
+                // Header with refresh button
                 HorizontalLayout {
                     Text {
                         text: "Design Checks";
@@ -205,15 +200,27 @@ export component RightSidebar inherits Rectangle {
                     
                     Rectangle { }
                     
-                    Text {
-                        text: "🔄";
-                        font-size: 14px;
+                    Rectangle {
+                        width: 24px;
+                        height: 24px;
+                        background: refresh-ta.has-hover ? Theme.bg-secondary : transparent;
+                        border-radius: Theme.radius-sm;
+                        
+                        Text {
+                            text: "🔄";
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+                        
+                        refresh-ta := TouchArea { }
                     }
                 }
                 
-                // Summary
+                // Summary row
                 HorizontalLayout {
-                    spacing: Theme.spacing-md;
+                    spacing: Theme.spacing-lg;
+                    height: 24px;
                     
                     HorizontalLayout {
                         spacing: Theme.spacing-xs;
@@ -223,6 +230,7 @@ export component RightSidebar inherits Rectangle {
                             height: 8px;
                             background: Theme.error;
                             border-radius: 4px;
+                            y: (parent.height - self.height) / 2;
                         }
                         
                         Text {
@@ -241,6 +249,7 @@ export component RightSidebar inherits Rectangle {
                             height: 8px;
                             background: Theme.warning;
                             border-radius: 4px;
+                            y: (parent.height - self.height) / 2;
                         }
                         
                         Text {
@@ -257,19 +266,23 @@ export component RightSidebar inherits Rectangle {
                     background: Theme.border-subtle;
                 }
                 
-                // DRC items
-                DrcItem {
-                    severity: "error";
-                    message: "Clearance violation";
-                    location: "U1.pad1 - R1.pad2";
-                    clicked => { root.drc-item-clicked(0); }
-                }
-                
-                DrcItem {
-                    severity: "warning";
-                    message: "Unconnected pin";
-                    location: "U1.NC";
-                    clicked => { root.drc-item-clicked(1); }
+                // DRC items list
+                VerticalLayout {
+                    spacing: 2px;
+                    
+                    DrcItem {
+                        severity: "error";
+                        message: "Clearance violation";
+                        location: "U1.pad1 - R1.pad2";
+                        clicked => { root.drc-item-clicked(0); }
+                    }
+                    
+                    DrcItem {
+                        severity: "warning";
+                        message: "Unconnected pin";
+                        location: "U1.NC";
+                        clicked => { root.drc-item-clicked(1); }
+                    }
                 }
             }
         }
