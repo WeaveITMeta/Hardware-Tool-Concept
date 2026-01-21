@@ -102,18 +102,18 @@ Use these keywords to navigate to relevant `.md` files:
 | # | Feature | Status | File(s) | Tests | Notes |
 |---|---------|--------|---------|-------|-------|
 | 1.3.1 | Symbol library browser | ✅ | `library.rs` | 7 | Tree view, filter, preview |
-| 1.3.2 | Symbol placement (click) | 📋 | - | - | Place from library |
-| 1.3.3 | Symbol placement (quick-add) | 📋 | - | - | Keyboard shortcuts R, C, L |
-| 1.3.4 | Wire drawing (click-click) | 📋 | - | - | Orthogonal segments |
+| 1.3.2 | Symbol placement (click) | ✅ | `schematic_editor.slint` | - | Click to place symbols on canvas |
+| 1.3.3 | Symbol placement (quick-add) | ✅ | `schematic_editor.slint`, `main.rs` | - | R=resistor, C=capacitor, L=inductor |
+| 1.3.4 | Wire drawing (click-click) | ✅ | `schematic_editor.slint` | - | Click to start, click to add segments |
 | 1.3.5 | Wire drawing (click-drag) | 📋 | - | - | Freeform wire |
-| 1.3.6 | Wire mode toggle (/) | 📋 | - | - | Horizontal/vertical first |
-| 1.3.7 | Auto-junction creation | 📋 | - | - | At wire intersections |
+| 1.3.6 | Wire mode toggle (/) | ✅ | `schematic_editor.slint` | - | H→V / V→H toggle with / key |
+| 1.3.7 | Junction placement | ✅ | `schematic_editor.slint` | - | J key or toolbar button |
 | 1.3.8 | Bus drawing | 📋 | - | - | Thick line segments |
 | 1.3.9 | Bus entry placement | 📋 | - | - | Connect signals to bus |
-| 1.3.10 | Label placement | 📋 | - | - | Local/global/hierarchical |
-| 1.3.11 | Power symbol placement | 📋 | - | - | VCC, GND, custom |
-| 1.3.12 | No-connect placement | 📋 | - | - | X marker |
-| 1.3.13 | Symbol rotation (R) | 📋 | - | - | 90° increments |
+| 1.3.10 | Label placement | ✅ | `schematic_editor.slint` | - | Toolbar button, auto-names NET1, NET2... |
+| 1.3.11 | Power symbol placement | ✅ | `schematic_editor.slint`, `main.rs` | - | G=ground, V=VCC |
+| 1.3.12 | No-connect placement | ✅ | `schematic_editor.slint` | - | X key or toolbar button |
+| 1.3.13 | Symbol rotation (R) | ✅ | `schematic_editor.slint` | - | Shift+R for 90° rotation |
 | 1.3.14 | Symbol mirror (X/Y) | 📋 | - | - | Horizontal/vertical |
 | 1.3.15 | Symbol move (M) | 📋 | - | - | Drag to new position |
 | 1.3.16 | Symbol copy (C) | 📋 | - | - | Duplicate |
