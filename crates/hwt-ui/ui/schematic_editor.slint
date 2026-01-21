@@ -1,0 +1,656 @@
+// Schematic Editor Component
+// Handles symbol placement, wire drawing, and schematic editing interactions
+
+import { Theme } from "theme.slint";
+
+// Editor tool modes
+export enum EditorTool {
+    select,
+    place-symbol,
+    draw-wire,
+    draw-bus,
+    place-label,
+    place-power,
+    place-no-connect,
+    place-junction,
+    place-text,
+}
+
+// Wire drawing mode (which direction first)
+export enum WireMode {
+    horizontal-first,
+    vertical-first,
+}
+
+// Symbol data for placement
+export struct SymbolData {
+    library: string,
+    name: string,
+    reference-prefix: string,
+    value: string,
+}
+
+// Placed symbol on canvas
+export struct PlacedSymbolView {
+    id: string,
+    reference: string,
+    value: string,
+    x: float,
+    y: float,
+    rotation: int,
+    mirror-x: bool,
+    mirror-y: bool,
+    selected: bool,
+}
+
+// Wire segment on canvas
+export struct WireSegmentView {
+    id: string,
+    start-x: float,
+    start-y: float,
+    end-x: float,
+    end-y: float,
+    selected: bool,
+}
+
+// Junction point
+export struct JunctionView {
+    id: string,
+    x: float,
+    y: float,
+    selected: bool,
+}
+
+// Net label
+export struct NetLabelView {
+    id: string,
+    name: string,
+    x: float,
+    y: float,
+    rotation: int,
+    selected: bool,
+}
+
+// Grid snapping helper
+export global SchematicGrid {
+    in-out property <float> size: 10.0;
+    in-out property <bool> snap-enabled: true;
+    in-out property <bool> visible: true;
+    
+    pure public function snap(value: float) -> float {
+        if !snap-enabled { return value; }
+        return round(value / size) * size;
+    }
+}
+
+// Tool button component (must be defined before use)
+component ToolButton inherits Rectangle {
+    in property <string> icon;
+    in property <string> tooltip;
+    in property <bool> active: false;
+    callback clicked;
+    
+    width: 28px;
+    height: 28px;
+    background: active ? Theme.primary.with-alpha(0.2) : 
+                ta.has-hover ? Theme.bg-tertiary : transparent;
+    border-radius: Theme.radius-sm;
+    border-width: active ? 1px : 0px;
+    border-color: Theme.primary;
+    
+    Text {
+        text: icon;
+        font-size: 14px;
+        color: active ? Theme.primary : Theme.text-primary;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    
+    ta := TouchArea {
+        clicked => { root.clicked(); }
+    }
+}
+
+// Symbol preview during placement
+component SymbolGhost inherits Rectangle {
+    in property <float> pos-x;
+    in property <float> pos-y;
+    in property <int> rotation: 0;
+    in property <string> symbol-name;
+    in property <bool> show: false;
+    
+    x: pos-x * 1px - 40px;
+    y: pos-y * 1px - 30px;
+    width: 80px;
+    height: 60px;
+    background: Theme.primary.with-alpha(0.1);
+    border-width: 1px;
+    border-color: Theme.primary;
+    border-radius: Theme.radius-sm;
+    opacity: show ? 0.8 : 0.0;
+    
+    Text {
+        text: symbol-name;
+        font-size: 10px;
+        color: Theme.primary;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}
+
+// Wire preview during drawing
+component WirePreview inherits Rectangle {
+    in property <float> start-x;
+    in property <float> start-y;
+    in property <float> end-x;
+    in property <float> end-y;
+    in property <WireMode> mode;
+    in property <bool> show: false;
+    
+    background: transparent;
+    opacity: show ? 1.0 : 0.0;
+    
+    // Horizontal segment
+    Rectangle {
+        x: min(start-x, mode == WireMode.horizontal-first ? end-x : start-x) * 1px;
+        y: start-y * 1px - 1px;
+        width: abs(mode == WireMode.horizontal-first ? end-x - start-x : 0) * 1px;
+        height: 2px;
+        background: Theme.primary;
+    }
+    
+    // Vertical segment  
+    Rectangle {
+        x: (mode == WireMode.horizontal-first ? end-x : start-x) * 1px - 1px;
+        y: min(start-y, end-y) * 1px;
+        width: 2px;
+        height: abs(end-y - start-y) * 1px;
+        background: Theme.primary;
+    }
+    
+    // Second horizontal (if vertical first)
+    if mode == WireMode.vertical-first: Rectangle {
+        x: min(start-x, end-x) * 1px;
+        y: end-y * 1px - 1px;
+        width: abs(end-x - start-x) * 1px;
+        height: 2px;
+        background: Theme.primary;
+    }
+}
+
+// Schematic editor toolbar
+export component SchematicToolbar inherits Rectangle {
+    in-out property <EditorTool> current-tool: EditorTool.select;
+    in-out property <WireMode> wire-mode: WireMode.horizontal-first;
+    
+    callback tool-changed(EditorTool);
+    
+    height: 36px;
+    background: Theme.bg-secondary;
+    
+    // Bottom border line
+    Rectangle {
+        y: parent.height - 1px;
+        width: 100%;
+        height: 1px;
+        background: Theme.border-subtle;
+    }
+    
+    HorizontalLayout {
+        padding-left: Theme.spacing-md;
+        padding-right: Theme.spacing-md;
+        spacing: 2px;
+        alignment: start;
+        
+        // Selection tool
+        ToolButton {
+            icon: "⬚";
+            tooltip: "Select (Esc)";
+            active: current-tool == EditorTool.select;
+            clicked => { 
+                current-tool = EditorTool.select;
+                root.tool-changed(EditorTool.select);
+            }
+        }
+        
+        Rectangle { width: 8px; }
+        
+        // Symbol placement
+        ToolButton {
+            icon: "⬡";
+            tooltip: "Place Symbol (P)";
+            active: current-tool == EditorTool.place-symbol;
+            clicked => { 
+                current-tool = EditorTool.place-symbol;
+                root.tool-changed(EditorTool.place-symbol);
+            }
+        }
+        
+        // Wire drawing
+        ToolButton {
+            icon: "─";
+            tooltip: "Draw Wire (W)";
+            active: current-tool == EditorTool.draw-wire;
+            clicked => { 
+                current-tool = EditorTool.draw-wire;
+                root.tool-changed(EditorTool.draw-wire);
+            }
+        }
+        
+        // Bus drawing
+        ToolButton {
+            icon: "═";
+            tooltip: "Draw Bus (B)";
+            active: current-tool == EditorTool.draw-bus;
+            clicked => { 
+                current-tool = EditorTool.draw-bus;
+                root.tool-changed(EditorTool.draw-bus);
+            }
+        }
+        
+        Rectangle { width: 8px; }
+        
+        // Label placement
+        ToolButton {
+            icon: "🏷";
+            tooltip: "Place Label (L)";
+            active: current-tool == EditorTool.place-label;
+            clicked => { 
+                current-tool = EditorTool.place-label;
+                root.tool-changed(EditorTool.place-label);
+            }
+        }
+        
+        // Power symbol
+        ToolButton {
+            icon: "⏚";
+            tooltip: "Place Power (G)";
+            active: current-tool == EditorTool.place-power;
+            clicked => { 
+                current-tool = EditorTool.place-power;
+                root.tool-changed(EditorTool.place-power);
+            }
+        }
+        
+        // No-connect
+        ToolButton {
+            icon: "✕";
+            tooltip: "No Connect (X)";
+            active: current-tool == EditorTool.place-no-connect;
+            clicked => { 
+                current-tool = EditorTool.place-no-connect;
+                root.tool-changed(EditorTool.place-no-connect);
+            }
+        }
+        
+        // Junction
+        ToolButton {
+            icon: "●";
+            tooltip: "Junction (J)";
+            active: current-tool == EditorTool.place-junction;
+            clicked => { 
+                current-tool = EditorTool.place-junction;
+                root.tool-changed(EditorTool.place-junction);
+            }
+        }
+        
+        Rectangle { width: 8px; }
+        
+        // Text annotation
+        ToolButton {
+            icon: "T";
+            tooltip: "Text (T)";
+            active: current-tool == EditorTool.place-text;
+            clicked => { 
+                current-tool = EditorTool.place-text;
+                root.tool-changed(EditorTool.place-text);
+            }
+        }
+        
+        Rectangle { }
+        
+        // Wire mode indicator
+        Rectangle {
+            width: 80px;
+            height: 24px;
+            background: Theme.bg-tertiary;
+            border-radius: Theme.radius-sm;
+            
+            HorizontalLayout {
+                padding-left: Theme.spacing-sm;
+                padding-right: Theme.spacing-sm;
+                spacing: Theme.spacing-xs;
+                
+                Text {
+                    text: wire-mode == WireMode.horizontal-first ? "H→V" : "V→H";
+                    font-size: 11px;
+                    color: Theme.text-secondary;
+                    vertical-alignment: center;
+                }
+                
+                Text {
+                    text: "(/)";
+                    font-size: 10px;
+                    color: Theme.text-disabled;
+                    vertical-alignment: center;
+                }
+            }
+            
+            TouchArea {
+                clicked => {
+                    wire-mode = wire-mode == WireMode.horizontal-first ? 
+                        WireMode.vertical-first : WireMode.horizontal-first;
+                }
+            }
+        }
+    }
+}
+
+// Main schematic canvas
+export component SchematicCanvas inherits Rectangle {
+    in property <float> zoom: 1.0;
+    in property <float> pan-x: 0.0;
+    in property <float> pan-y: 0.0;
+    in property <bool> show-grid: true;
+    in-out property <EditorTool> current-tool: EditorTool.select;
+    in-out property <WireMode> wire-mode: WireMode.horizontal-first;
+    
+    // Symbol being placed
+    in property <SymbolData> placing-symbol;
+    in property <bool> is-placing: false;
+    
+    // Placed elements
+    in property <[PlacedSymbolView]> symbols: [];
+    in property <[WireSegmentView]> wires: [];
+    in property <[JunctionView]> junctions: [];
+    in property <[NetLabelView]> labels: [];
+    
+    // Wire drawing state
+    property <bool> is-drawing-wire: false;
+    property <float> wire-start-x: 0.0;
+    property <float> wire-start-y: 0.0;
+    
+    // Mouse position
+    property <float> mouse-x: 0.0;
+    property <float> mouse-y: 0.0;
+    
+    // Rotation for placement
+    in-out property <int> placement-rotation: 0;
+    
+    // Callbacks
+    callback mouse-moved(float, float);
+    callback symbol-placed(float, float, int);
+    callback wire-started(float, float);
+    callback wire-segment-added(float, float, float, float);
+    callback wire-completed;
+    callback junction-placed(float, float);
+    callback label-placed(float, float);
+    callback no-connect-placed(float, float);
+    callback element-selected(string);
+    callback selection-cleared;
+    callback zoom-changed(float);
+    
+    background: Theme.bg-primary;
+    clip: true;
+    
+    // Grid pattern (simplified - real grid would scale with zoom)
+    if show-grid: Rectangle {
+        // Grid would be rendered procedurally in real implementation
+        background: transparent;
+    }
+    
+    // Render placed symbols
+    for symbol in symbols: Rectangle {
+        x: symbol.x * zoom * 1px + pan-x * 1px - 40px;
+        y: symbol.y * zoom * 1px + pan-y * 1px - 30px;
+        width: 80px;
+        height: 60px;
+        background: symbol.selected ? Theme.primary.with-alpha(0.15) : Theme.bg-secondary;
+        border-width: symbol.selected ? 2px : 1px;
+        border-color: symbol.selected ? Theme.primary : Theme.border-default;
+        border-radius: Theme.radius-sm;
+        
+        VerticalLayout {
+            alignment: center;
+            padding: Theme.spacing-xs;
+            
+            Text {
+                text: symbol.reference;
+                font-size: 11px;
+                font-weight: 600;
+                color: Theme.text-primary;
+                horizontal-alignment: center;
+            }
+            
+            Text {
+                text: symbol.value;
+                font-size: 10px;
+                color: Theme.text-secondary;
+                horizontal-alignment: center;
+            }
+        }
+        
+        TouchArea {
+            clicked => {
+                if current-tool == EditorTool.select {
+                    root.element-selected(symbol.id);
+                }
+            }
+        }
+    }
+    
+    // Render wires
+    for wire in wires: Rectangle {
+        x: min(wire.start-x, wire.end-x) * zoom * 1px + pan-x * 1px;
+        y: min(wire.start-y, wire.end-y) * zoom * 1px + pan-y * 1px;
+        width: max(2px, abs(wire.end-x - wire.start-x) * zoom * 1px);
+        height: max(2px, abs(wire.end-y - wire.start-y) * zoom * 1px);
+        background: wire.selected ? Theme.primary : Theme.success;
+        
+        TouchArea {
+            clicked => {
+                if current-tool == EditorTool.select {
+                    root.element-selected(wire.id);
+                }
+            }
+        }
+    }
+    
+    // Render junctions
+    for junction in junctions: Rectangle {
+        x: junction.x * zoom * 1px + pan-x * 1px - 4px;
+        y: junction.y * zoom * 1px + pan-y * 1px - 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background: junction.selected ? Theme.primary : Theme.success;
+    }
+    
+    // Render labels
+    for label in labels: Rectangle {
+        x: label.x * zoom * 1px + pan-x * 1px;
+        y: label.y * zoom * 1px + pan-y * 1px - 10px;
+        height: 20px;
+        background: label.selected ? Theme.primary.with-alpha(0.2) : transparent;
+        border-radius: Theme.radius-sm;
+        
+        HorizontalLayout {
+            padding-left: Theme.spacing-xs;
+            padding-right: Theme.spacing-xs;
+            
+            Text {
+                text: label.name;
+                font-size: 11px;
+                font-weight: 500;
+                color: label.selected ? Theme.primary : Theme.warning;
+                vertical-alignment: center;
+            }
+        }
+    }
+    
+    // Symbol ghost during placement
+    SymbolGhost {
+        pos-x: SchematicGrid.snap(mouse-x);
+        pos-y: SchematicGrid.snap(mouse-y);
+        rotation: placement-rotation;
+        symbol-name: placing-symbol.name;
+        show: is-placing && current-tool == EditorTool.place-symbol;
+    }
+    
+    // Wire preview during drawing
+    WirePreview {
+        start-x: wire-start-x;
+        start-y: wire-start-y;
+        end-x: SchematicGrid.snap(mouse-x);
+        end-y: SchematicGrid.snap(mouse-y);
+        mode: wire-mode;
+        show: is-drawing-wire;
+    }
+    
+    // Crosshair cursor for placement modes
+    if current-tool != EditorTool.select: Rectangle {
+        x: mouse-x * 1px - 8px;
+        y: mouse-y * 1px;
+        width: 16px;
+        height: 1px;
+        background: Theme.primary.with-alpha(0.5);
+    }
+    
+    if current-tool != EditorTool.select: Rectangle {
+        x: mouse-x * 1px;
+        y: mouse-y * 1px - 8px;
+        width: 1px;
+        height: 16px;
+        background: Theme.primary.with-alpha(0.5);
+    }
+    
+    // Mouse interaction
+    ta := TouchArea {
+        moved => {
+            mouse-x = self.mouse-x / 1px;
+            mouse-y = self.mouse-y / 1px;
+            root.mouse-moved(mouse-x, mouse-y);
+        }
+        
+        pointer-event(e) => {
+            if e.kind == PointerEventKind.down && e.button == PointerEventButton.left {
+                if current-tool == EditorTool.select {
+                    root.selection-cleared();
+                } else if current-tool == EditorTool.place-symbol && is-placing {
+                    root.symbol-placed(
+                        SchematicGrid.snap(mouse-x),
+                        SchematicGrid.snap(mouse-y),
+                        placement-rotation
+                    );
+                } else if current-tool == EditorTool.draw-wire {
+                    if !is-drawing-wire {
+                        wire-start-x = SchematicGrid.snap(mouse-x);
+                        wire-start-y = SchematicGrid.snap(mouse-y);
+                        is-drawing-wire = true;
+                        root.wire-started(wire-start-x, wire-start-y);
+                    } else {
+                        root.wire-segment-added(
+                            wire-start-x, wire-start-y,
+                            SchematicGrid.snap(mouse-x),
+                            SchematicGrid.snap(mouse-y)
+                        );
+                        wire-start-x = SchematicGrid.snap(mouse-x);
+                        wire-start-y = SchematicGrid.snap(mouse-y);
+                    }
+                } else if current-tool == EditorTool.place-junction {
+                    root.junction-placed(
+                        SchematicGrid.snap(mouse-x),
+                        SchematicGrid.snap(mouse-y)
+                    );
+                } else if current-tool == EditorTool.place-label {
+                    root.label-placed(
+                        SchematicGrid.snap(mouse-x),
+                        SchematicGrid.snap(mouse-y)
+                    );
+                } else if current-tool == EditorTool.place-no-connect {
+                    root.no-connect-placed(
+                        SchematicGrid.snap(mouse-x),
+                        SchematicGrid.snap(mouse-y)
+                    );
+                }
+            } else if e.kind == PointerEventKind.down && e.button == PointerEventButton.right {
+                // Right click cancels current operation
+                if is-drawing-wire {
+                    is-drawing-wire = false;
+                    root.wire-completed();
+                }
+            }
+        }
+        
+        scroll-event(e) => {
+            if e.delta-y != 0px {
+                root.zoom-changed(zoom * (1.0 + (e.delta-y / 100px)));
+            }
+            return accept;
+        }
+    }
+    
+    // Keyboard handling would be done in Rust side
+}
+
+// Complete schematic editor with toolbar
+export component SchematicEditor inherits Rectangle {
+    in-out property <float> zoom: 1.0;
+    in-out property <EditorTool> current-tool: EditorTool.select;
+    in-out property <WireMode> wire-mode: WireMode.horizontal-first;
+    in property <SymbolData> placing-symbol;
+    in property <bool> is-placing: false;
+    in property <[PlacedSymbolView]> symbols: [];
+    in property <[WireSegmentView]> wires: [];
+    in property <[JunctionView]> junctions: [];
+    in property <[NetLabelView]> labels: [];
+    
+    callback tool-changed(EditorTool);
+    callback mouse-moved(float, float);
+    callback symbol-placed(float, float, int);
+    callback wire-started(float, float);
+    callback wire-segment-added(float, float, float, float);
+    callback wire-completed;
+    callback junction-placed(float, float);
+    callback label-placed(float, float);
+    callback no-connect-placed(float, float);
+    callback element-selected(string);
+    callback selection-cleared;
+    callback zoom-changed(float);
+    
+    background: Theme.bg-primary;
+    
+    VerticalLayout {
+        spacing: 0px;
+        
+        SchematicToolbar {
+            current-tool <=> root.current-tool;
+            wire-mode <=> root.wire-mode;
+            tool-changed(tool) => { root.tool-changed(tool); }
+        }
+        
+        SchematicCanvas {
+            zoom: root.zoom;
+            current-tool <=> root.current-tool;
+            wire-mode <=> root.wire-mode;
+            placing-symbol: root.placing-symbol;
+            is-placing: root.is-placing;
+            symbols: root.symbols;
+            wires: root.wires;
+            junctions: root.junctions;
+            labels: root.labels;
+            
+            mouse-moved(x, y) => { root.mouse-moved(x, y); }
+            symbol-placed(x, y, r) => { root.symbol-placed(x, y, r); }
+            wire-started(x, y) => { root.wire-started(x, y); }
+            wire-segment-added(sx, sy, ex, ey) => { root.wire-segment-added(sx, sy, ex, ey); }
+            wire-completed => { root.wire-completed(); }
+            junction-placed(x, y) => { root.junction-placed(x, y); }
+            label-placed(x, y) => { root.label-placed(x, y); }
+            no-connect-placed(x, y) => { root.no-connect-placed(x, y); }
+            element-selected(id) => { root.element-selected(id); }
+            selection-cleared => { root.selection-cleared(); }
+            zoom-changed(z) => { root.zoom-changed(z); }
+        }
+    }
+}

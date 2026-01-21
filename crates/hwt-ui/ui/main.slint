@@ -8,6 +8,7 @@ import { RightSidebar } from "right_sidebar.slint";
 import { BottomBar } from "bottom_bar.slint";
 import { Canvas, Floating3DPanel } from "canvas.slint";
 import { TooltipOverlay } from "tooltip.slint";
+import { SchematicEditor, EditorTool, WireMode, SymbolData, PlacedSymbolView, WireSegmentView, JunctionView, NetLabelView } from "schematic_editor.slint";
 
 export component MainWindow inherits Window {
     title: "Hardware Tool";
@@ -95,6 +96,16 @@ export component MainWindow inherits Window {
     in-out property <float> cursor-y: 0.0;
     in-out property <int> selection-count: 0;
     
+    // Schematic editor state
+    in-out property <EditorTool> schematic-tool: EditorTool.select;
+    in-out property <WireMode> wire-mode: WireMode.horizontal-first;
+    in-out property <SymbolData> placing-symbol: { library: "", name: "", reference-prefix: "", value: "" };
+    in-out property <bool> is-placing-symbol: false;
+    in-out property <[PlacedSymbolView]> placed-symbols: [];
+    in-out property <[WireSegmentView]> placed-wires: [];
+    in-out property <[JunctionView]> placed-junctions: [];
+    in-out property <[NetLabelView]> placed-labels: [];
+    
     // Performance
     in-out property <int> fps: 60;
     in-out property <int> memory-mb: 245;
@@ -106,6 +117,18 @@ export component MainWindow inherits Window {
     callback undo-requested;
     callback redo-requested;
     callback search-requested;
+    
+    // Schematic editor callbacks
+    callback schematic-tool-changed(EditorTool);
+    callback symbol-placed(float, float, int);
+    callback wire-started(float, float);
+    callback wire-segment-added(float, float, float, float);
+    callback wire-completed;
+    callback junction-placed(float, float);
+    callback label-placed(float, float);
+    callback no-connect-placed(float, float);
+    callback element-selected(string);
+    callback selection-cleared;
     
     // Title bar - fixed at top
     TitleBar {
@@ -156,8 +179,37 @@ export component MainWindow inherits Window {
         
         // Canvas area with floating 3D panel
         Rectangle {
-            // Main canvas (z-index: 0 - bottom layer)
-            Canvas {
+            // Schematic editor (when in schematic view)
+            if current-view == 0: SchematicEditor {
+                zoom: root.zoom;
+                current-tool <=> root.schematic-tool;
+                wire-mode <=> root.wire-mode;
+                placing-symbol: root.placing-symbol;
+                is-placing: root.is-placing-symbol;
+                symbols: root.placed-symbols;
+                wires: root.placed-wires;
+                junctions: root.placed-junctions;
+                labels: root.placed-labels;
+                
+                tool-changed(tool) => { root.schematic-tool-changed(tool); }
+                mouse-moved(x, y) => {
+                    root.cursor-x = x;
+                    root.cursor-y = y;
+                }
+                symbol-placed(x, y, r) => { root.symbol-placed(x, y, r); }
+                wire-started(x, y) => { root.wire-started(x, y); }
+                wire-segment-added(sx, sy, ex, ey) => { root.wire-segment-added(sx, sy, ex, ey); }
+                wire-completed => { root.wire-completed(); }
+                junction-placed(x, y) => { root.junction-placed(x, y); }
+                label-placed(x, y) => { root.label-placed(x, y); }
+                no-connect-placed(x, y) => { root.no-connect-placed(x, y); }
+                element-selected(id) => { root.element-selected(id); }
+                selection-cleared => { root.selection-cleared(); }
+                zoom-changed(z) => { root.zoom = clamp(z, 0.1, 10.0); }
+            }
+            
+            // Layout/3D/Code views use generic canvas
+            if current-view != 0: Canvas {
                 zoom: root.zoom;
                 
                 mouse-moved(x, y) => {
