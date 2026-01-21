@@ -85,7 +85,7 @@ export global SchematicGrid {
 
 // Tool button component (must be defined before use)
 component ToolButton inherits Rectangle {
-    in property <string> icon;
+    in property <image> icon-image;
     in property <string> tooltip;
     in property <bool> active: false;
     callback clicked;
@@ -98,12 +98,13 @@ component ToolButton inherits Rectangle {
     border-width: active ? 1px : 0px;
     border-color: Theme.primary;
     
-    Text {
-        text: icon;
-        font-size: 14px;
-        color: active ? Theme.primary : Theme.text-primary;
-        horizontal-alignment: center;
-        vertical-alignment: center;
+    Image {
+        source: icon-image;
+        width: 16px;
+        height: 16px;
+        colorize: active ? Theme.primary : Theme.text-primary;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
     }
     
     ta := TouchArea {
@@ -204,7 +205,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Selection tool
         ToolButton {
-            icon: "⬚";
+            icon-image: @image-url("../assets/icons/select.svg");
             tooltip: "Select (Esc)";
             active: current-tool == EditorTool.select;
             clicked => { 
@@ -217,7 +218,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Symbol placement
         ToolButton {
-            icon: "⬡";
+            icon-image: @image-url("../assets/icons/symbol.svg");
             tooltip: "Place Symbol (P)";
             active: current-tool == EditorTool.place-symbol;
             clicked => { 
@@ -228,7 +229,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Wire drawing
         ToolButton {
-            icon: "─";
+            icon-image: @image-url("../assets/icons/wire.svg");
             tooltip: "Draw Wire (W)";
             active: current-tool == EditorTool.draw-wire;
             clicked => { 
@@ -239,7 +240,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Bus drawing
         ToolButton {
-            icon: "═";
+            icon-image: @image-url("../assets/icons/bus.svg");
             tooltip: "Draw Bus (B)";
             active: current-tool == EditorTool.draw-bus;
             clicked => { 
@@ -252,7 +253,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Label placement
         ToolButton {
-            icon: "🏷";
+            icon-image: @image-url("../assets/icons/label.svg");
             tooltip: "Place Label (L)";
             active: current-tool == EditorTool.place-label;
             clicked => { 
@@ -263,7 +264,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Power symbol
         ToolButton {
-            icon: "⏚";
+            icon-image: @image-url("../assets/icons/ground.svg");
             tooltip: "Place Power (G)";
             active: current-tool == EditorTool.place-power;
             clicked => { 
@@ -274,7 +275,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // No-connect
         ToolButton {
-            icon: "✕";
+            icon-image: @image-url("../assets/icons/no-connect.svg");
             tooltip: "No Connect (X)";
             active: current-tool == EditorTool.place-no-connect;
             clicked => { 
@@ -285,7 +286,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Junction
         ToolButton {
-            icon: "●";
+            icon-image: @image-url("../assets/icons/junction.svg");
             tooltip: "Junction (J)";
             active: current-tool == EditorTool.place-junction;
             clicked => { 
@@ -298,7 +299,7 @@ export component SchematicToolbar inherits Rectangle {
         
         // Text annotation
         ToolButton {
-            icon: "T";
+            icon-image: @image-url("../assets/icons/text.svg");
             tooltip: "Text (T)";
             active: current-tool == EditorTool.place-text;
             clicked => { 
