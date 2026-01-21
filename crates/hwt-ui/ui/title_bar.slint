@@ -75,7 +75,6 @@ export component MenuDropdown inherits Rectangle {
                 HorizontalLayout {
                     padding-left: Theme.spacing-md;
                     padding-right: Theme.spacing-md;
-                    spacing: Theme.spacing-lg;
                     
                     Text {
                         text: item.label;
@@ -84,9 +83,7 @@ export component MenuDropdown inherits Rectangle {
                         vertical-alignment: center;
                     }
                     
-                    Rectangle { 
-                        min-width: 8px;
-                    }
+                    Rectangle { }
                     
                     Text {
                         text: item.shortcut;
@@ -94,6 +91,7 @@ export component MenuDropdown inherits Rectangle {
                         font-size: 11px;
                         vertical-alignment: center;
                         horizontal-alignment: right;
+                        min-width: 60px;
                     }
                 }
                 

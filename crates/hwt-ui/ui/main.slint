@@ -8,7 +8,7 @@ import { RightSidebar } from "right_sidebar.slint";
 import { BottomBar } from "bottom_bar.slint";
 import { Canvas, Floating3DPanel } from "canvas.slint";
 import { TooltipOverlay } from "tooltip.slint";
-import { SchematicEditor, EditorTool, WireMode, SymbolData, PlacedSymbolView, WireSegmentView, JunctionView, NetLabelView } from "schematic_editor.slint";
+import { SchematicEditor, EditorTool, WireMode, SymbolData, PlacedSymbolView, WireSegmentView, JunctionView, NetLabelView, SchematicGrid } from "schematic_editor.slint";
 
 export component MainWindow inherits Window {
     title: "Hardware Tool";
@@ -398,6 +398,22 @@ export component MainWindow inherits Window {
             
             item-clicked(idx) => {
                 root.active-menu = 0;
+                // Zoom In
+                if idx == 0 { root.zoom = clamp(root.zoom * 1.25, 0.1, 10.0); }
+                // Zoom Out
+                if idx == 1 { root.zoom = clamp(root.zoom / 1.25, 0.1, 10.0); }
+                // Fit to Screen
+                if idx == 2 { root.zoom = 1.0; }
+                // Zoom to Selection
+                if idx == 3 { root.zoom = 1.0; }
+                // Toggle Grid (idx 5)
+                if idx == 5 { SchematicGrid.visible = !SchematicGrid.visible; }
+                // 3D Preview Panel (idx 8)
+                if idx == 8 { root.show-3d-panel = !root.show-3d-panel; }
+                // Left Sidebar (idx 9)
+                if idx == 9 { root.left-sidebar-collapsed = !root.left-sidebar-collapsed; }
+                // Right Sidebar (idx 10)
+                if idx == 10 { root.right-sidebar-collapsed = !root.right-sidebar-collapsed; }
             }
         }
         
