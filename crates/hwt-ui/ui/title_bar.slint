@@ -8,7 +8,7 @@ export component DomainSelector inherits Rectangle {
     in property <int> current-domain: 0;
     in property <[string]> domain-names: ["PCB", "IC", "Quantum", "MEMS", "RF", "Packaging"];
     in property <[string]> domain-icons: ["🔲", "🔷", "⚛️", "📡", "📶", "📦"];
-    in property <[color]> domain-colors: [#B87333, #3498DB, #9B59B6, #1ABC9C, #E67E22, #7F8C8D];
+    in property <[color]> domain-colors: [#006847, #3498DB, #9B59B6, #1ABC9C, #E67E22, #7F8C8D];
     in-out property <bool> dropdown-open: false;
     callback domain-changed(int);
     
@@ -57,7 +57,7 @@ export component DomainDropdown inherits Rectangle {
     in property <int> current-domain: 0;
     in property <[string]> domain-names: ["PCB", "IC", "Quantum", "MEMS", "RF", "Packaging"];
     in property <[string]> domain-icons: ["🔲", "🔷", "⚛️", "📡", "📶", "📦"];
-    in property <[color]> domain-colors: [#B87333, #3498DB, #9B59B6, #1ABC9C, #E67E22, #7F8C8D];
+    in property <[color]> domain-colors: [#006847, #3498DB, #9B59B6, #1ABC9C, #E67E22, #7F8C8D];
     callback domain-selected(int);
     callback close-requested;
     
