@@ -176,12 +176,104 @@ fn main() -> Result<(), slint::PlatformError> {
         tracing::info!("No-connect placed at ({}, {})", x, y);
     });
 
-    main_window.on_element_selected(|id| {
+    let window_weak = main_window.as_weak();
+    main_window.on_element_selected(move |id| {
         tracing::info!("Element selected: {}", id);
+
+        if let Some(window) = window_weak.upgrade() {
+            let id = id.to_string();
+
+            let symbols: Vec<PlacedSymbolView> = window
+                .get_placed_symbols()
+                .iter()
+                .map(|mut s| {
+                    s.selected = s.id.as_str() == id.as_str();
+                    s
+                })
+                .collect();
+            window.set_placed_symbols(Rc::new(slint::VecModel::from(symbols)).into());
+
+            let wires: Vec<WireSegmentView> = window
+                .get_placed_wires()
+                .iter()
+                .map(|mut w| {
+                    w.selected = w.id.as_str() == id.as_str();
+                    w
+                })
+                .collect();
+            window.set_placed_wires(Rc::new(slint::VecModel::from(wires)).into());
+
+            let junctions: Vec<JunctionView> = window
+                .get_placed_junctions()
+                .iter()
+                .map(|mut j| {
+                    j.selected = j.id.as_str() == id.as_str();
+                    j
+                })
+                .collect();
+            window.set_placed_junctions(Rc::new(slint::VecModel::from(junctions)).into());
+
+            let labels: Vec<NetLabelView> = window
+                .get_placed_labels()
+                .iter()
+                .map(|mut l| {
+                    l.selected = l.id.as_str() == id.as_str();
+                    l
+                })
+                .collect();
+            window.set_placed_labels(Rc::new(slint::VecModel::from(labels)).into());
+
+            window.set_selection_count(1);
+        }
     });
 
-    main_window.on_selection_cleared(|| {
+    let window_weak = main_window.as_weak();
+    main_window.on_selection_cleared(move || {
         tracing::debug!("Selection cleared");
+
+        if let Some(window) = window_weak.upgrade() {
+            let symbols: Vec<PlacedSymbolView> = window
+                .get_placed_symbols()
+                .iter()
+                .map(|mut s| {
+                    s.selected = false;
+                    s
+                })
+                .collect();
+            window.set_placed_symbols(Rc::new(slint::VecModel::from(symbols)).into());
+
+            let wires: Vec<WireSegmentView> = window
+                .get_placed_wires()
+                .iter()
+                .map(|mut w| {
+                    w.selected = false;
+                    w
+                })
+                .collect();
+            window.set_placed_wires(Rc::new(slint::VecModel::from(wires)).into());
+
+            let junctions: Vec<JunctionView> = window
+                .get_placed_junctions()
+                .iter()
+                .map(|mut j| {
+                    j.selected = false;
+                    j
+                })
+                .collect();
+            window.set_placed_junctions(Rc::new(slint::VecModel::from(junctions)).into());
+
+            let labels: Vec<NetLabelView> = window
+                .get_placed_labels()
+                .iter()
+                .map(|mut l| {
+                    l.selected = false;
+                    l
+                })
+                .collect();
+            window.set_placed_labels(Rc::new(slint::VecModel::from(labels)).into());
+
+            window.set_selection_count(0);
+        }
     });
 
     // Quick-add symbol callbacks
@@ -264,8 +356,41 @@ fn main() -> Result<(), slint::PlatformError> {
         tracing::info!("Rotate placement 90°");
     });
 
-    main_window.on_delete_selected(|| {
+    let window_weak = main_window.as_weak();
+    main_window.on_delete_selected(move || {
         tracing::info!("Delete selected elements");
+
+        if let Some(window) = window_weak.upgrade() {
+            let symbols: Vec<PlacedSymbolView> = window
+                .get_placed_symbols()
+                .iter()
+                .filter(|s| !s.selected)
+                .collect();
+            window.set_placed_symbols(Rc::new(slint::VecModel::from(symbols)).into());
+
+            let wires: Vec<WireSegmentView> = window
+                .get_placed_wires()
+                .iter()
+                .filter(|w| !w.selected)
+                .collect();
+            window.set_placed_wires(Rc::new(slint::VecModel::from(wires)).into());
+
+            let junctions: Vec<JunctionView> = window
+                .get_placed_junctions()
+                .iter()
+                .filter(|j| !j.selected)
+                .collect();
+            window.set_placed_junctions(Rc::new(slint::VecModel::from(junctions)).into());
+
+            let labels: Vec<NetLabelView> = window
+                .get_placed_labels()
+                .iter()
+                .filter(|l| !l.selected)
+                .collect();
+            window.set_placed_labels(Rc::new(slint::VecModel::from(labels)).into());
+
+            window.set_selection_count(0);
+        }
     });
 
     tracing::info!("Hardware Tool ready!");

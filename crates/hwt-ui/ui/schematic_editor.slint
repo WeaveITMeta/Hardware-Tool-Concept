@@ -495,6 +495,14 @@ export component SchematicCanvas inherits Rectangle {
         height: 8px;
         border-radius: 4px;
         background: junction.selected ? Theme.primary : Theme.success;
+        
+        TouchArea {
+            clicked => {
+                if current-tool == EditorTool.select {
+                    root.element-selected(junction.id);
+                }
+            }
+        }
     }
     
     // Render labels
@@ -515,6 +523,14 @@ export component SchematicCanvas inherits Rectangle {
                 font-weight: 500;
                 color: label.selected ? Theme.primary : Theme.warning;
                 vertical-alignment: center;
+            }
+        }
+        
+        TouchArea {
+            clicked => {
+                if current-tool == EditorTool.select {
+                    root.element-selected(label.id);
+                }
             }
         }
     }
