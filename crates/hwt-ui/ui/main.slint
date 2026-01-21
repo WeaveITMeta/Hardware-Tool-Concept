@@ -86,6 +86,7 @@ export component MainWindow inherits Window {
             
             // Canvas area with floating 3D panel
             Rectangle {
+                // Main canvas (z-index: 0 - bottom layer)
                 Canvas {
                     zoom: root.zoom;
                     
@@ -99,8 +100,10 @@ export component MainWindow inherits Window {
                     }
                 }
                 
-                // Floating 3D panel
+                // Floating 3D panel (z-index: 1 - above canvas, positioned top-right)
                 if show-3d-panel && !panel-3d-maximized: Floating3DPanel {
+                    x: parent.width - self.width - 16px;
+                    y: 16px;
                     maximized: false;
                     
                     maximize-clicked => {
@@ -135,17 +138,29 @@ export component MainWindow inherits Window {
         }
     }
     
-    // Maximized 3D panel overlay
-    if panel-3d-maximized: Floating3DPanel {
-        maximized: true;
+    // Maximized 3D panel overlay (z-index: 2 - above everything except dropdowns)
+    if panel-3d-maximized: Rectangle {
+        x: 0px;
+        y: Theme.titlebar-height;
+        width: 100%;
+        height: root.height - Theme.titlebar-height - Theme.bottombar-height;
+        background: transparent;
         
-        maximize-clicked => {
-            root.panel-3d-maximized = false;
-        }
-        
-        close-clicked => {
-            root.panel-3d-maximized = false;
-            root.show-3d-panel = false;
+        Floating3DPanel {
+            x: (parent.width - self.width) / 2;
+            y: (parent.height - self.height) / 2;
+            width: parent.width - 64px;
+            height: parent.height - 64px;
+            maximized: true;
+            
+            maximize-clicked => {
+                root.panel-3d-maximized = false;
+            }
+            
+            close-clicked => {
+                root.panel-3d-maximized = false;
+                root.show-3d-panel = false;
+            }
         }
     }
 }
