@@ -243,10 +243,10 @@ export component MainWindow inherits Window {
             }
         }
         
-        // The actual dropdown menu
+        // The actual dropdown menu - positioned below the toolbar
         DomainDropdown {
-            x: 200px + Theme.spacing-sm + Theme.spacing-md;
-            y: Theme.titlebar-height + 4px;
+            x: 36px + Theme.spacing-sm;  // Logo width + spacing
+            y: Theme.titlebar-height;     // Below both menu bar and toolbar
             current-domain: root.current-domain;
             
             domain-selected(idx) => {
